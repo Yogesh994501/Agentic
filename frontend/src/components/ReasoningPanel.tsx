@@ -1,6 +1,6 @@
 import React from 'react';
-import { Brain, CheckCircle, AlertCircle, ArrowUpRight, HelpCircle } from 'lucide-react';
-import { Incident } from '../lib/types';
+import { Brain } from 'lucide-react';
+import type { Incident } from '../lib/types';
 
 interface ReasoningPanelProps {
   incident: Incident | null;
@@ -14,58 +14,66 @@ export const ReasoningPanel: React.FC<ReasoningPanelProps> = ({ incident }) => {
 
   return (
     <div className="glass-panel rounded-xl p-4 border border-cyan-500/20 shadow-lg font-mono text-xs">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
+      <div className="flex items-center justify-between pb-2.5 border-b border-slate-800 mb-3">
         <div className="flex items-center space-x-2">
           <Brain className="w-4 h-4 text-purple-400" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-            Transparent Agent Decision Trace
-          </h3>
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Agent Decision Trace
+            </h3>
+            <span className="text-[10px] text-slate-400 block -mt-0.5">
+              Why the agent decided
+            </span>
+          </div>
         </div>
-        <span className="text-[10px] text-purple-400 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800">
-          AUDITABLE STATE
+        <span className="text-[10px] text-purple-300 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800">
+          Auditable Trace
         </span>
       </div>
 
-      <div className="space-y-3">
-        {/* GOAL */}
+      <div className="space-y-2.5">
+        {/* Investigation Goal */}
         <div>
-          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider block mb-0.5">
+          <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider block mb-0.5">
             1. Investigation Goal
           </span>
-          <p className="text-slate-200 bg-slate-900/80 p-2 rounded border border-slate-800">
-            Determine whether incoming security alert {incident.alert_id} represents a successful breach or benign anomaly, without blindly trusting signature labels.
+          <p className="text-slate-200 bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] leading-relaxed">
+            Determine whether security alert {incident.alert_id} represents an active compromise or benign traffic without relying on signature severity alone.
           </p>
         </div>
 
-        {/* WORKING HYPOTHESIS */}
+        {/* Working Hypothesis */}
         <div>
-          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider block mb-0.5">
+          <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider block mb-0.5">
             2. Working Hypothesis
           </span>
-          <p className="text-slate-200 bg-slate-900/80 p-2 rounded border border-slate-800 italic">
+          <p className="text-slate-200 bg-slate-900/80 p-2 rounded border border-slate-800 italic text-[11px] leading-relaxed">
             "{incident.current_hypothesis}"
           </p>
         </div>
 
-        {/* EVIDENCE CORRELATED */}
+        {/* Correlated Evidence Artifacts */}
         <div>
-          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider block mb-0.5">
-            3. Correlated Evidence Artifacts ({evidence.length})
-          </span>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
+              3. Correlated Evidence ({evidence.length})
+            </span>
+            <span className="text-[10px] text-slate-500">Host & network artifacts</span>
+          </div>
           <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
             {evidence.length === 0 ? (
-              <p className="text-slate-500 italic">No artifacts retrieved yet.</p>
+              <p className="text-slate-500 italic text-[11px]">No artifacts retrieved yet.</p>
             ) : (
               evidence.map((ev) => (
                 <div
                   key={ev.evidence_id}
-                  className="flex items-start justify-between p-2 rounded bg-slate-950/60 border border-slate-800/80 gap-2"
+                  className="flex items-start justify-between p-2 rounded bg-slate-950/70 border border-slate-800/80 gap-2 text-[11px]"
                 >
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] text-cyan-400 font-bold">[{ev.evidence_id}]</span>
-                    <span className="text-[11px] text-slate-300">{ev.finding}</span>
+                    <span className="text-slate-300">{ev.finding}</span>
                   </div>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 ${
                     ev.supports_success ? 'text-red-400 bg-red-950/60' : 'text-emerald-400 bg-emerald-950/60'
                   }`}>
                     {ev.confidence_impact > 0 ? `+${ev.confidence_impact}` : ev.confidence_impact}
@@ -76,18 +84,18 @@ export const ReasoningPanel: React.FC<ReasoningPanelProps> = ({ incident }) => {
           </div>
         </div>
 
-        {/* FINAL DECISION SUMMARY */}
+        {/* Final Assessment Summary */}
         {hasOutcome && (
           <div className="pt-2 border-t border-slate-800">
             <div className="flex items-center justify-between">
-              <span className="text-slate-400 font-bold uppercase text-[10px] tracking-wider">
-                Final Incident Assessment:
+              <span className="text-slate-400 font-semibold uppercase text-[10px]">
+                Final Assessment Outcome:
               </span>
-              <span className="text-sm font-bold text-slate-100">
-                {incident.attack_outcome} ({incident.confidence}%)
+              <span className="text-xs font-bold text-slate-100">
+                {incident.attack_outcome.replace('ATTACK_', '')} ({incident.confidence}%)
               </span>
             </div>
-            <p className="text-slate-300 bg-slate-900/90 p-2 rounded border border-slate-700/80 mt-1">
+            <p className="text-slate-300 bg-slate-900/90 p-2 rounded border border-slate-700/80 mt-1 text-[11px] leading-relaxed">
               {incident.reasoning_summary}
             </p>
           </div>

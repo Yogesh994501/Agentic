@@ -1,15 +1,20 @@
 import React from 'react';
 import { AlertCircle, ShieldAlert, CheckCircle2, XCircle, Gauge } from 'lucide-react';
-import { Incident } from '../lib/types';
+import type { Incident } from '../lib/types';
 
 interface KpiCardsProps {
   incidents: Incident[];
   avgConfidence: number;
+  isInvestigating?: boolean;
 }
 
-export const KpiCards: React.FC<KpiCardsProps> = ({ incidents, avgConfidence }) => {
-  const activeCount = incidents.filter(i => i.status !== 'CLOSED').length;
-  const investigatingCount = incidents.filter(i => i.status === 'INVESTIGATING' || i.status === 'NEW').length;
+export const KpiCards: React.FC<KpiCardsProps> = ({
+  incidents,
+  avgConfidence,
+  isInvestigating = false
+}) => {
+  const activeCount = incidents.filter(i => i.status !== 'CLOSED').length || 1;
+  const investigatingCount = isInvestigating ? 1 : incidents.filter(i => i.status === 'INVESTIGATING').length;
   const containedCount = incidents.filter(i => i.status === 'CONTAINED').length;
   const falsePositivesCount = incidents.filter(i => i.status === 'FALSE_POSITIVE').length;
 
@@ -20,17 +25,17 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ incidents, avgConfidence }) 
       icon: AlertCircle,
       color: 'text-cyan-400',
       border: 'border-cyan-500/20',
-      bg: 'bg-cyan-950/20',
+      bg: 'bg-cyan-950/15',
       subtitle: 'Simulated queue'
     },
     {
       title: 'Investigating',
       value: investigatingCount,
       icon: ShieldAlert,
-      color: 'text-amber-400',
-      border: 'border-amber-500/20',
-      bg: 'bg-amber-950/20',
-      subtitle: 'Correlating evidence'
+      color: isInvestigating ? 'text-amber-400 animate-pulse' : 'text-slate-400',
+      border: isInvestigating ? 'border-amber-500/50 bg-amber-950/30' : 'border-slate-800 bg-slate-900/30',
+      bg: '',
+      subtitle: isInvestigating ? 'Live correlation' : 'Idle'
     },
     {
       title: 'Contained',
@@ -38,46 +43,52 @@ export const KpiCards: React.FC<KpiCardsProps> = ({ incidents, avgConfidence }) 
       icon: CheckCircle2,
       color: 'text-emerald-400',
       border: 'border-emerald-500/20',
-      bg: 'bg-emerald-950/20',
-      subtitle: 'Firewall block verified'
+      bg: 'bg-emerald-950/15',
+      subtitle: 'Firewall enforced'
     },
     {
       title: 'False Positives',
       value: falsePositivesCount,
       icon: XCircle,
       color: 'text-slate-400',
-      border: 'border-slate-700/50',
-      bg: 'bg-slate-900/40',
-      subtitle: 'Host defended / Dropped'
+      border: 'border-slate-800',
+      bg: 'bg-slate-900/30',
+      subtitle: 'Defended / Dropped'
     },
     {
-      title: 'Agent Avg Confidence',
+      title: 'Agent Confidence',
       value: `${avgConfidence}%`,
       icon: Gauge,
-      color: 'text-purple-400',
-      border: 'border-purple-500/20',
+      color: 'text-purple-300',
+      border: 'border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.15)]',
       bg: 'bg-purple-950/20',
-      subtitle: 'Multi-source threshold'
+      subtitle: 'Correlated score'
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5">
       {cards.map((card, idx) => {
         const Icon = card.icon;
         return (
           <div
             key={idx}
-            className={`p-3.5 rounded-xl border ${card.border} ${card.bg} backdrop-blur-sm relative overflow-hidden transition-all hover:scale-[1.01]`}
+            className={`h-[88px] px-3.5 py-2.5 rounded-xl border ${card.border} ${card.bg} backdrop-blur-sm flex flex-col justify-between transition-all hover:border-slate-600`}
           >
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">{card.title}</span>
-              <Icon className={`w-4 h-4 ${card.color}`} />
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
+                {card.title}
+              </span>
+              <Icon className={`w-3.5 h-3.5 ${card.color}`} />
             </div>
-            <div className="flex items-baseline space-x-2">
-              <span className="text-2xl font-bold font-mono tracking-tight text-slate-100">{card.value}</span>
+            <div className="flex items-baseline space-x-1.5">
+              <span className="text-2xl font-bold font-mono text-slate-100 leading-none">
+                {card.value}
+              </span>
             </div>
-            <p className="text-[10px] text-slate-500 mt-1 truncate">{card.subtitle}</p>
+            <p className="text-[10px] text-slate-500 font-mono truncate leading-none">
+              {card.subtitle}
+            </p>
           </div>
         );
       })}

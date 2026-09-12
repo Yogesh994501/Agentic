@@ -1,6 +1,6 @@
 import React from 'react';
-import { Network, ArrowRight, ShieldCheck, AlertCircle, Bug, FileText, Lock, CheckCircle2 } from 'lucide-react';
-import { Incident, Alert } from '../lib/types';
+import { Network, ArrowRight, ShieldCheck, AlertCircle, Bug, FileText, Lock, CheckCircle2, ShieldX } from 'lucide-react';
+import type { Incident, Alert } from '../lib/types';
 
 interface EvidenceGraphProps {
   incident: Incident | null;
@@ -11,11 +11,11 @@ export const EvidenceGraph: React.FC<EvidenceGraphProps> = ({ incident, alert })
   const evidenceList = incident?.evidence || [];
   const hasAsset = evidenceList.some(e => e.source_tool === 'get_asset');
   const hasVuln = evidenceList.some(e => e.source_tool === 'get_vulnerabilities');
-  const hasPacket = evidenceList.some(e => e.source_tool === 'get_packet_metadata');
   const hasLogs = evidenceList.some(e => e.source_tool === 'get_server_logs');
   const hasInjected = evidenceList.some(e => e.source_tool === 'inject_new_evidence');
   const isDecided = incident?.attack_outcome && incident.attack_outcome !== 'UNDETERMINED';
   const isBlocked = incident?.response_status === 'EXECUTED';
+  const isFailed = incident?.attack_outcome === 'ATTACK_FAILED';
 
   const nodes = [
     {
@@ -37,7 +37,7 @@ export const EvidenceGraph: React.FC<EvidenceGraphProps> = ({ incident, alert })
     {
       id: 'asset',
       title: 'Asset Inventory',
-      subtitle: hasAsset ? 'Server-07 (Exposed)' : 'Correlating...',
+      subtitle: hasAsset ? 'Host Posture Verified' : 'Correlating...',
       icon: ShieldCheck,
       active: hasAsset,
       color: hasAsset ? 'border-cyan-500 bg-cyan-950/40 text-cyan-300' : 'border-slate-800 bg-slate-900/40 text-slate-500'
@@ -64,27 +64,35 @@ export const EvidenceGraph: React.FC<EvidenceGraphProps> = ({ incident, alert })
       subtitle: isDecided ? incident?.attack_outcome?.replace('ATTACK_', '') : 'Assessing...',
       icon: CheckCircle2,
       active: isDecided,
-      color: incident?.attack_outcome === 'ATTACK_SUCCEEDED' ? 'border-red-500 bg-red-950/60 text-red-300' :
-             incident?.attack_outcome === 'ATTACK_FAILED' ? 'border-emerald-500 bg-emerald-950/60 text-emerald-300' :
+      color: incident?.attack_outcome === 'ATTACK_SUCCEEDED' ? 'border-red-500 bg-red-950/60 text-red-300 shadow-glow-red' :
+             incident?.attack_outcome === 'ATTACK_FAILED' ? 'border-emerald-500 bg-emerald-950/60 text-emerald-300 shadow-glow-emerald' :
              'border-slate-800 bg-slate-900/40 text-slate-500'
     },
     {
       id: 'response',
       title: 'Simulated Firewall',
-      subtitle: isBlocked ? 'RULE ACTIVE (PASSED)' : 'Standby',
-      icon: Lock,
-      active: isBlocked,
-      color: isBlocked ? 'border-emerald-400 bg-emerald-950 text-emerald-300 shadow-glow-emerald' : 'border-slate-800 bg-slate-900/40 text-slate-500'
+      subtitle: isBlocked
+        ? 'RULE ACTIVE (PASSED)'
+        : isFailed
+        ? 'NO CONTAINMENT REQUIRED'
+        : 'Standby',
+      icon: isFailed ? ShieldX : Lock,
+      active: isBlocked || isFailed,
+      color: isBlocked
+        ? 'border-emerald-400 bg-emerald-950 text-emerald-300 shadow-glow-emerald'
+        : isFailed
+        ? 'border-slate-700 bg-slate-900/80 text-slate-400'
+        : 'border-slate-800 bg-slate-900/40 text-slate-500'
     }
   ];
 
   return (
     <div className="glass-panel rounded-xl p-4 border border-cyan-500/20 shadow-lg">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3 font-mono">
+      <div className="flex items-center justify-between pb-2.5 border-b border-slate-800 mb-3 font-mono">
         <div className="flex items-center space-x-2">
           <Network className="w-4 h-4 text-cyan-400" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-            Multi-Source Evidence Correlation Graph
+            Multi-Source Evidence Correlation
           </h3>
         </div>
         <span className="text-[10px] text-slate-400">
@@ -92,32 +100,40 @@ export const EvidenceGraph: React.FC<EvidenceGraphProps> = ({ incident, alert })
         </span>
       </div>
 
-      {/* Visual Flow Node Sequence */}
-      <div className="flex flex-wrap items-center justify-between gap-2 py-2">
-        {nodes.map((node, index) => {
-          const Icon = node.icon;
-          return (
-            <React.Fragment key={node.id}>
-              <div
-                className={`flex-1 min-w-[130px] p-2.5 rounded-lg border text-center transition-all ${node.color} ${
-                  node.active ? 'shadow-sm' : 'opacity-60'
-                }`}
-              >
-                <div className="flex justify-center mb-1">
-                  <Icon className={`w-4 h-4 ${node.active ? 'animate-pulse' : ''}`} />
-                </div>
-                <div className="text-[11px] font-bold font-mono truncate">{node.title}</div>
-                <div className="text-[10px] text-slate-400 truncate mt-0.5">{node.subtitle}</div>
-              </div>
+      {/* Horizontal Flow Container with Scroll Safety */}
+      <div className="overflow-x-auto pb-1">
+        <div className="flex items-center justify-between gap-2 min-w-[1000px] py-1">
+          {nodes.map((node, index) => {
+            const Icon = node.icon;
+            const isPathActive = node.active && (index === 0 || nodes[index - 1].active);
 
-              {index < nodes.length - 1 && (
-                <div className="hidden xl:flex items-center text-slate-600">
-                  <ArrowRight className={`w-3.5 h-3.5 ${nodes[index].active && nodes[index + 1].active ? 'text-cyan-400 animate-pulse' : ''}`} />
+            return (
+              <React.Fragment key={node.id}>
+                <div
+                  className={`flex-1 min-w-[140px] max-w-[170px] p-2.5 rounded-lg border text-center transition-all ${node.color} ${
+                    node.active ? 'shadow-sm' : 'opacity-50'
+                  }`}
+                >
+                  <div className="flex justify-center mb-1">
+                    <Icon className={`w-4 h-4 ${node.active ? 'animate-pulse' : ''}`} />
+                  </div>
+                  <div className="text-[11px] font-bold font-mono truncate">{node.title}</div>
+                  <div className="text-[10px] text-slate-400 truncate mt-0.5">{node.subtitle}</div>
                 </div>
-              )}
-            </React.Fragment>
-          );
-        })}
+
+                {index < nodes.length - 1 && (
+                  <div className="flex items-center text-slate-600 px-0.5">
+                    <ArrowRight className={`w-3.5 h-3.5 transition-all ${
+                      isPathActive && nodes[index + 1].active
+                        ? 'text-cyan-400 animate-flow-pulse'
+                        : 'text-slate-700'
+                    }`} />
+                  </div>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

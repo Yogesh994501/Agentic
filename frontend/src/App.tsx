@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from './lib/api';
-import { Incident, Alert, Asset, SandboxState, Scenario, AgentEvent, FirewallRule } from './lib/types';
+import type { Incident, Alert, SandboxState, Scenario, AgentEvent } from './lib/types';
 import { Header } from './components/Header';
+import { NavigationDrawer } from './components/NavigationDrawer';
+import { FloatingAgentStatus } from './components/FloatingAgentStatus';
+import { BackToTop } from './components/BackToTop';
 import { KpiCards } from './components/KpiCards';
 import { SimulationControl } from './components/SimulationControl';
+import { LiveAgentState } from './components/LiveAgentState';
 import { LiveInvestigation } from './components/LiveInvestigation';
 import { EvidenceGraph } from './components/EvidenceGraph';
 import { AgentTimeline } from './components/AgentTimeline';
@@ -27,6 +31,10 @@ export const App: React.FC = () => {
   const [isResetting, setIsResetting] = useState<boolean>(false);
   const [toolFailureActive, setToolFailureActive] = useState<boolean>(false);
 
+  // Navigation & Drawer State
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [activeSection, setActiveSection] = useState<string>('command-center');
+
   // Modals
   const [isInjectModalOpen, setIsInjectModalOpen] = useState<boolean>(false);
   const [isOverrideModalOpen, setIsOverrideModalOpen] = useState<boolean>(false);
@@ -38,7 +46,7 @@ export const App: React.FC = () => {
         api.listScenarios(),
         api.listIncidents(),
         api.listAlerts(),
-        api.getSandboxState()
+        api.getSandboxState(),
       ]);
 
       setScenarios(scList);
@@ -69,9 +77,17 @@ export const App: React.FC = () => {
       // Update agent state
       if (newEvent.event_type === 'ACTION') {
         setAgentStatus('RESPONDING');
-      } else if (newEvent.event_type === 'DECISION' && newEvent.description.includes('concluded')) {
-        setAgentStatus('IDLE');
-      } else if (newEvent.event_type === 'OBSERVE' || newEvent.event_type === 'PLAN') {
+      } else if (
+        newEvent.event_type === 'DECISION' &&
+        (newEvent.description.includes('concluded') || newEvent.description.includes('Assessment:'))
+      ) {
+        // Allow brief interval to reflect completion
+        setTimeout(() => setAgentStatus('IDLE'), 1800);
+      } else if (
+        newEvent.event_type === 'OBSERVE' ||
+        newEvent.event_type === 'PLAN' ||
+        newEvent.event_type === 'TOOL_CALL'
+      ) {
         setAgentStatus('INVESTIGATING');
       }
 
@@ -93,6 +109,41 @@ export const App: React.FC = () => {
     };
   }, []);
 
+  // Smooth Scroll Helper
+  const scrollToSection = (sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // IntersectionObserver for Automatic Active Section Highlighting
+  useEffect(() => {
+    const sectionIds = ['command-center', 'simulation', 'investigation', 'evidence', 'agent-trace'];
+
+    const handleIntersect: IntersectionObserverCallback = (entries) => {
+      const visibleEntries = entries.filter((e) => e.isIntersecting);
+      if (visibleEntries.length > 0) {
+        // Sort by intersection ratio descending
+        visibleEntries.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        setActiveSection(visibleEntries[0].target.id);
+      }
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: null,
+      rootMargin: '-80px 0px -40% 0px',
+      threshold: [0.15, 0.35, 0.6],
+    });
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   // Handlers
   const handleLaunchScenario = async (scenarioId: string) => {
     try {
@@ -102,6 +153,8 @@ export const App: React.FC = () => {
       const inc = await api.getIncident(res.incident_id);
       setCurrentIncident(inc);
       setIncidents((prev) => [inc, ...prev.filter((i) => i.incident_id !== inc.incident_id)]);
+      // Auto-scroll into investigation section to watch live execution
+      scrollToSection('investigation');
     } catch (err) {
       console.error('Failed to launch scenario:', err);
       setAgentStatus('IDLE');
@@ -179,49 +232,80 @@ export const App: React.FC = () => {
 
   // Associated Alert
   const currentAlert = alerts.find((a) => a.alert_id === currentIncident?.alert_id) || null;
-  const avgConfidence = incidents.length > 0
-    ? Math.round(incidents.reduce((acc, i) => acc + (i.confidence || 0), 0) / incidents.length)
-    : 85;
+  const avgConfidence =
+    incidents.length > 0
+      ? Math.round(incidents.reduce((acc, i) => acc + (i.confidence || 0), 0) / incidents.length)
+      : 85;
 
   return (
-    <div className="min-h-screen bg-[#070a13] text-slate-100 cyber-grid flex flex-col">
-      {/* Top Header */}
+    <div className="min-h-screen bg-[#070a13] text-slate-100 cyber-grid flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+      {/* Left-Side Navigation Drawer */}
+      <NavigationDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        activeSection={activeSection}
+        onNavigate={scrollToSection}
+        agentStatus={agentStatus}
+      />
+
+      {/* Sticky Operational Header with Navigation */}
       <Header
         sandboxState={sandboxState}
         agentStatus={agentStatus}
         onReset={handleResetSandbox}
         isResetting={isResetting}
+        onOpenDrawer={() => setIsDrawerOpen(true)}
+        activeSection={activeSection}
+        onNavigate={scrollToSection}
       />
 
-      <main className="flex-1 p-4 lg:p-6 space-y-4 max-w-[1700px] w-full mx-auto">
-        {/* KPI Metrics */}
-        <KpiCards incidents={incidents} avgConfidence={avgConfidence} />
+      <main className="flex-1 p-4 lg:p-6 space-y-5 max-w-[1680px] w-full mx-auto">
+        {/* 1. Command Center / KPI Row */}
+        <section id="command-center" className="scroll-mt-20">
+          <KpiCards
+            incidents={incidents}
+            avgConfidence={avgConfidence}
+            isInvestigating={agentStatus === 'INVESTIGATING'}
+          />
+        </section>
 
-        {/* Simulation Scenario Controls */}
-        <SimulationControl
-          scenarios={scenarios}
-          selectedScenarioId={selectedScenarioId}
-          onSelectScenario={setSelectedScenarioId}
-          onLaunchScenario={handleLaunchScenario}
-          onOpenInjectModal={() => setIsInjectModalOpen(true)}
-          onOpenOverrideModal={() => setIsOverrideModalOpen(true)}
-          onToggleToolFailure={handleToggleToolFailure}
-          toolFailureActive={toolFailureActive}
-          isInvestigating={agentStatus === 'INVESTIGATING'}
-        />
+        {/* 2. Simulation Scenario Controls */}
+        <section id="simulation" className="scroll-mt-20">
+          <SimulationControl
+            scenarios={scenarios}
+            selectedScenarioId={selectedScenarioId}
+            onSelectScenario={setSelectedScenarioId}
+            onLaunchScenario={handleLaunchScenario}
+            onOpenInjectModal={() => setIsInjectModalOpen(true)}
+            onOpenOverrideModal={() => setIsOverrideModalOpen(true)}
+            onToggleToolFailure={handleToggleToolFailure}
+            toolFailureActive={toolFailureActive}
+            isInvestigating={agentStatus === 'INVESTIGATING'}
+          />
+        </section>
 
-        {/* Live Investigation Telemetry Panel */}
-        <LiveInvestigation
-          incident={currentIncident}
-          alert={currentAlert}
-          isInvestigating={agentStatus === 'INVESTIGATING'}
-        />
+        {/* 3. Live Autonomous Investigation Pipeline & Hypothesis */}
+        <section id="investigation" className="scroll-mt-20 space-y-4">
+          <LiveAgentState
+            incident={currentIncident}
+            events={events}
+            isInvestigating={agentStatus === 'INVESTIGATING'}
+          />
 
-        {/* Visual Multi-Source Evidence Correlation Graph */}
-        <EvidenceGraph incident={currentIncident} alert={currentAlert} />
+          <LiveInvestigation
+            incident={currentIncident}
+            alert={currentAlert}
+            isInvestigating={agentStatus === 'INVESTIGATING'}
+          />
+        </section>
 
-        {/* Two-Column Split: Left = Live Event Stream, Right = Reasoning & Response Center */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* 4. Multi-Source Evidence Correlation Graph */}
+        <section id="evidence" className="scroll-mt-20">
+          <EvidenceGraph incident={currentIncident} alert={currentAlert} />
+        </section>
+
+        {/* 5. Agent Trace: Live Telemetry Stream & Reasoning Center */}
+        <section id="agent-trace" className="scroll-mt-20 grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Left Column (7 cols): Real-Time Agent Execution Timeline */}
           <div className="lg:col-span-7">
             <AgentTimeline events={events} />
@@ -229,7 +313,9 @@ export const App: React.FC = () => {
 
           {/* Right Column (5 cols): Reasoning Decision Trace & Response Center */}
           <div className="lg:col-span-5 space-y-4">
-            <ReasoningPanel incident={currentIncident} />
+            <div id="decision-trace" className="scroll-mt-20">
+              <ReasoningPanel incident={currentIncident} />
+            </div>
             <ResponseCenter
               incident={currentIncident}
               alert={currentAlert}
@@ -239,8 +325,18 @@ export const App: React.FC = () => {
               onReleaseBlock={handleReleaseBlock}
             />
           </div>
-        </div>
+        </section>
       </main>
+
+      {/* Floating Persistent Agent Status Pill (Fixed Bottom Right) */}
+      <FloatingAgentStatus
+        agentStatus={agentStatus}
+        currentIncident={currentIncident}
+        onClick={() => scrollToSection('investigation')}
+      />
+
+      {/* Back to Top Floating Button (Visible after ~450px scroll) */}
+      <BackToTop />
 
       {/* Modals */}
       {currentIncident && (

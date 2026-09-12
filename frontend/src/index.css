@@ -11,11 +11,11 @@
 
 /* Custom SOC scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d1a;
+  background: #080c18;
 }
 ::-webkit-scrollbar-thumb {
   background: #1e293b;
@@ -25,37 +25,53 @@
   background: #00f0ff55;
 }
 
-/* Subtle cyber scanline effect */
+/* Subtle cyber background grid: reduced opacity by 20% for cleaner content focus */
 .cyber-grid {
-  background-size: 30px 30px;
+  background-size: 32px 32px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
 }
 
 .glass-panel {
-  background: rgba(12, 17, 32, 0.85);
+  background: rgba(11, 16, 30, 0.88);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 240, 255, 0.12);
+  border-radius: 12px;
 }
 
 .shadow-glow-cyan {
-  box-shadow: 0 0 20px -3px rgba(0, 240, 255, 0.25);
+  box-shadow: 0 0 20px -3px rgba(0, 240, 255, 0.22);
 }
 
 .shadow-glow-red {
-  box-shadow: 0 0 20px -3px rgba(239, 68, 68, 0.35);
+  box-shadow: 0 0 20px -3px rgba(239, 68, 68, 0.3);
 }
 
 .shadow-glow-emerald {
-  box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.28);
+}
+
+.shadow-glow-purple {
+  box-shadow: 0 0 22px -3px rgba(168, 85, 247, 0.35);
 }
 
 @keyframes pulseSlow {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.45; }
 }
 
 .animate-pulse-slow {
   animation: pulseSlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Animated flow pulse for active evidence paths */
+@keyframes flowPulse {
+  0% { opacity: 0.3; transform: scaleX(0.96); }
+  50% { opacity: 1; transform: scaleX(1.04); }
+  100% { opacity: 0.3; transform: scaleX(0.96); }
+}
+
+.animate-flow-pulse {
+  animation: flowPulse 1.8s ease-in-out infinite;
 }
