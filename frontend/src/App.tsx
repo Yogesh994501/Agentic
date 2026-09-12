@@ -15,6 +15,7 @@ import { ReasoningPanel } from './components/ReasoningPanel';
 import { ResponseCenter } from './components/ResponseCenter';
 import { EvidenceInjectionModal } from './components/EvidenceInjectionModal';
 import { HumanOverrideModal } from './components/HumanOverrideModal';
+import { BackgroundVideoController } from './components/BackgroundVideoController';
 
 export const App: React.FC = () => {
   // Application Data State
@@ -238,7 +239,10 @@ export const App: React.FC = () => {
       : 85;
 
   return (
-    <div className="min-h-screen bg-[#070a13] text-slate-100 cyber-grid flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="min-h-screen text-slate-100 flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200 relative">
+      {/* Interactive Background Video Controller */}
+      <BackgroundVideoController />
+
       {/* Left-Side Navigation Drawer */}
       <NavigationDrawer
         isOpen={isDrawerOpen}
@@ -246,6 +250,8 @@ export const App: React.FC = () => {
         activeSection={activeSection}
         onNavigate={scrollToSection}
         agentStatus={agentStatus}
+        onReset={handleResetSandbox}
+        isResetting={isResetting}
       />
 
       {/* Sticky Operational Header with Navigation */}
@@ -281,6 +287,8 @@ export const App: React.FC = () => {
             onToggleToolFailure={handleToggleToolFailure}
             toolFailureActive={toolFailureActive}
             isInvestigating={agentStatus === 'INVESTIGATING'}
+            onReset={handleResetSandbox}
+            isResetting={isResetting}
           />
         </section>
 

@@ -9,7 +9,8 @@ import {
   Activity,
   FileText,
   Lock,
-  CheckCircle2
+  CheckCircle2,
+  RefreshCw
 } from 'lucide-react';
 
 interface NavItem {
@@ -64,6 +65,8 @@ interface NavigationDrawerProps {
   activeSection: string;
   onNavigate: (sectionId: string) => void;
   agentStatus: 'IDLE' | 'INVESTIGATING' | 'RESPONDING';
+  onReset?: () => void;
+  isResetting?: boolean;
 }
 
 export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
@@ -72,6 +75,8 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
   activeSection,
   onNavigate,
   agentStatus,
+  onReset,
+  isResetting = false,
 }) => {
   // ESC key support
   useEffect(() => {
@@ -140,7 +145,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 border border-slate-700/50 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 border border-slate-700/50 transition-colors cursor-pointer"
             title="Close navigation (Esc)"
           >
             <X className="w-4 h-4" />
@@ -180,7 +185,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
               <button
                 key={item.id}
                 onClick={() => handleItemClick(item.id)}
-                className={`w-full text-left flex items-start gap-3 p-3 rounded-lg border transition-all text-xs font-mono group ${
+                className={`w-full text-left flex items-start gap-3 p-3 rounded-lg border transition-all text-xs font-mono group cursor-pointer ${
                   isActive
                     ? 'bg-cyan-500/15 border-cyan-400/50 text-cyan-200 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
                     : 'bg-slate-900/40 hover:bg-slate-800/60 border-slate-800/80 hover:border-slate-700 text-slate-300'
@@ -213,8 +218,22 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
           })}
         </nav>
 
-        {/* Drawer Footer */}
-        <div className="p-4 border-t border-slate-800/80 bg-[#070b16]/90 space-y-2">
+        {/* Drawer Footer with Reset Button */}
+        <div className="p-4 border-t border-slate-800/80 bg-[#070b16]/95 space-y-3">
+          {onReset && (
+            <button
+              onClick={() => {
+                onReset();
+                onClose();
+              }}
+              disabled={isResetting}
+              className="w-full flex items-center justify-center space-x-2 py-2.5 px-3 rounded-lg bg-red-950/60 hover:bg-red-900/80 text-red-200 hover:text-white border border-red-500/50 font-mono text-xs font-bold transition-all cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-red-400 ${isResetting ? 'animate-spin' : ''}`} />
+              <span>{isResetting ? 'Resetting Sandbox...' : 'Reset Sandbox Environment'}</span>
+            </button>
+          )}
+
           <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
             <span className="flex items-center gap-1.5">
               <Lock className="w-3 h-3 text-blue-400" />
@@ -225,9 +244,6 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
               <span>Autonomous Active</span>
             </span>
           </div>
-          <p className="text-[10px] text-slate-400 font-mono text-center">
-            SentinelFlow Autonomous SOC Platform
-          </p>
         </div>
       </aside>
     </>

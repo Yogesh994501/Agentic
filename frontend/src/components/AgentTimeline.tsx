@@ -7,11 +7,17 @@ interface AgentTimelineProps {
 }
 
 export const AgentTimeline: React.FC<AgentTimelineProps> = ({ events }) => {
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>({});
 
+  // Auto-scroll ONLY within the timeline container itself, NEVER scrolling the main window!
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
   }, [events]);
 
   const toggleRaw = (id: string) => {
@@ -61,8 +67,11 @@ export const AgentTimeline: React.FC<AgentTimelineProps> = ({ events }) => {
         </span>
       </div>
 
-      {/* Events Stream with ~16px spacing (space-y-4) */}
-      <div className="flex-1 overflow-y-auto space-y-4 pr-2 font-mono">
+      {/* Events Stream with container-only scroll (never jumps the window) */}
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto space-y-4 pr-2 font-mono scroll-smooth"
+      >
         {events.length === 0 ? (
           <div className="h-full flex items-center justify-center text-slate-400 text-sm italic font-mono">
             Investigation pipeline standby. Launch a scenario to stream live reasoning steps.
@@ -128,7 +137,6 @@ export const AgentTimeline: React.FC<AgentTimelineProps> = ({ events }) => {
             );
           })
         )}
-        <div ref={bottomRef} />
       </div>
     </div>
   );

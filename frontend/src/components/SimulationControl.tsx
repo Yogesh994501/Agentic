@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Syringe, AlertTriangle, UserCheck, Flame, Cpu, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Play, Syringe, AlertTriangle, UserCheck, Flame, Cpu, ToggleLeft, ToggleRight, RefreshCw } from 'lucide-react';
 import type { Scenario } from '../lib/types';
 
 interface SimulationControlProps {
@@ -12,6 +12,8 @@ interface SimulationControlProps {
   onToggleToolFailure: (toolName: string, shouldFail: boolean) => void;
   toolFailureActive: boolean;
   isInvestigating: boolean;
+  onReset?: () => void;
+  isResetting?: boolean;
 }
 
 export const SimulationControl: React.FC<SimulationControlProps> = ({
@@ -23,7 +25,9 @@ export const SimulationControl: React.FC<SimulationControlProps> = ({
   onOpenOverrideModal,
   onToggleToolFailure,
   toolFailureActive,
-  isInvestigating
+  isInvestigating,
+  onReset,
+  isResetting = false,
 }) => {
   const currentScenario = scenarios[selectedScenarioId];
 
@@ -170,6 +174,19 @@ export const SimulationControl: React.FC<SimulationControlProps> = ({
               <UserCheck className="w-4 h-4 text-amber-400" />
               <span>HUMAN OVERRIDE</span>
             </button>
+
+            {/* Quick Reset Sandbox Button in Scenario Control Bar */}
+            {onReset && (
+              <button
+                onClick={onReset}
+                disabled={isResetting}
+                className="flex items-center space-x-1.5 px-3.5 py-2.5 rounded-lg bg-red-950/50 hover:bg-red-900/70 text-red-200 hover:text-white border border-red-500/40 font-mono text-xs font-bold transition-all cursor-pointer disabled:opacity-50"
+                title="Reset sandbox state, clear incidents, and reset all mock tools"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-red-400 ${isResetting ? 'animate-spin' : ''}`} />
+                <span>{isResetting ? 'RESETTING...' : 'RESET'}</span>
+              </button>
+            )}
           </div>
         </div>
       )}
