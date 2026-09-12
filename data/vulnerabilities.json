@@ -1,0 +1,170 @@
+[
+  {
+    "cve_id": "CVE-2023-50164",
+    "affected_product": "Apache Struts",
+    "affected_version": "2.5.30",
+    "cvss": 9.8,
+    "exploitability": "HIGH",
+    "description": "Remote Code Execution via path traversal in file upload parameter handling.",
+    "affected_assets": [
+      "Server-07"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-38035",
+    "affected_product": "Redis / API Gateway",
+    "affected_version": "7.0.5",
+    "cvss": 8.6,
+    "exploitability": "HIGH",
+    "description": "Lua sandbox escape permitting arbitrary host command injection via Redis EVAL.",
+    "affected_assets": [
+      "Server-02"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-46604",
+    "affected_product": "ActiveMQ Broker",
+    "affected_version": "5.18.2",
+    "cvss": 9.8,
+    "exploitability": "HIGH",
+    "description": "Deserialization flaw in OpenWire protocol leading to arbitrary command execution.",
+    "affected_assets": [
+      "Server-05"
+    ]
+  },
+  {
+    "cve_id": "CVE-2024-21626",
+    "affected_product": "HAProxy",
+    "affected_version": "2.8.3",
+    "cvss": 5.3,
+    "exploitability": "LOW",
+    "description": "Header parsing race condition causing minor memory leak under extreme load.",
+    "affected_assets": [
+      "Server-06"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-44487",
+    "affected_product": "Nginx",
+    "affected_version": "1.24.0",
+    "cvss": 7.5,
+    "exploitability": "MEDIUM",
+    "description": "HTTP/2 Rapid Reset attack leading to denial of service condition.",
+    "affected_assets": [
+      "Server-01"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-34039",
+    "affected_product": "Spring Security Core",
+    "affected_version": "5.8.0",
+    "cvss": 4.2,
+    "exploitability": "LOW",
+    "description": "Authorization bypass when using multiple pattern matchers without trailing slashes.",
+    "affected_assets": [
+      "Server-03"
+    ]
+  },
+  {
+    "cve_id": "CVE-2024-0012",
+    "affected_product": "Postfix Mail Gateway",
+    "affected_version": "3.5.18",
+    "cvss": 3.7,
+    "exploitability": "LOW",
+    "description": "Certificate validation warning suppression in legacy TLS fallback mode.",
+    "affected_assets": [
+      "Server-08"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-48795",
+    "affected_product": "OpenSSH",
+    "affected_version": "8.9p1",
+    "cvss": 5.9,
+    "exploitability": "LOW",
+    "description": "Terrapin attack: Prefix truncation during SSH handshake extension negotiation.",
+    "affected_assets": [
+      "Server-01",
+      "Server-09",
+      "Server-10"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-39325",
+    "affected_product": "MinIO Object Storage",
+    "affected_version": "2023.11.20",
+    "cvss": 7.5,
+    "exploitability": "MEDIUM",
+    "description": "HTTP/2 RST_STREAM frame processing consumption in Go net/http.",
+    "affected_assets": [
+      "Server-10"
+    ]
+  },
+  {
+    "cve_id": "CVE-2024-1597",
+    "affected_product": "PostgreSQL JDBC Driver",
+    "affected_version": "42.6.0",
+    "cvss": 8.8,
+    "exploitability": "HIGH",
+    "description": "SQL injection when using PreferQueryMode=SIMPLE and untrusted parameter substitution.",
+    "affected_assets": [
+      "Server-11"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-28252",
+    "affected_product": "Windows Server 2022",
+    "affected_version": "10.0.20348",
+    "cvss": 7.8,
+    "exploitability": "MEDIUM",
+    "description": "Windows Common Log File System (CLFS) Driver Elevation of Privilege.",
+    "affected_assets": [
+      "Server-12"
+    ]
+  },
+  {
+    "cve_id": "CVE-2024-23651",
+    "affected_product": "GitLab Runner",
+    "affected_version": "16.6.0",
+    "cvss": 4.1,
+    "exploitability": "LOW",
+    "description": "Build directory cache path sanitization bypass on Windows build containers.",
+    "affected_assets": [
+      "Server-13"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-4911",
+    "affected_product": "glibc ld.so",
+    "affected_version": "2.35",
+    "cvss": 7.8,
+    "exploitability": "HIGH",
+    "description": "Looney Tunables buffer overflow in GLIBC_TUNABLES processing.",
+    "affected_assets": [
+      "Server-05",
+      "Server-07"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-22527",
+    "affected_product": "Confluence / Java",
+    "affected_version": "8.5.2",
+    "cvss": 9.8,
+    "exploitability": "HIGH",
+    "description": "OGNL injection vulnerability in Confluence Data Center and Server.",
+    "affected_assets": [
+      "Server-15"
+    ]
+  },
+  {
+    "cve_id": "CVE-2023-38606",
+    "affected_product": "Envoy Proxy",
+    "affected_version": "1.28.0",
+    "cvss": 6.5,
+    "exploitability": "MEDIUM",
+    "description": "HTTP request smuggling via ambiguous Content-Length handling with Chunked encoding.",
+    "affected_assets": [
+      "Server-04"
+    ]
+  }
+]

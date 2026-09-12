@@ -1,0 +1,292 @@
+[
+  {
+    "alert_id": "ALT-1001",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T11:42:33.567226",
+    "signature": "ET EXPLOIT Apache Struts RCE (CVE-2023-50164) Multipart OGNL Injection",
+    "severity": "HIGH",
+    "source_ip": "198.51.100.23",
+    "destination_ip": "10.0.10.15",
+    "destination_port": 443,
+    "protocol": "HTTPS",
+    "metadata": {
+      "category": "Web Application Attack",
+      "sensor": "sensor-edge-dmz-01",
+      "classification": "Attempted Administrator Privilege Gain"
+    }
+  },
+  {
+    "alert_id": "ALT-1002",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T11:35:33.567226",
+    "signature": "ET WEB_SERVER Possible SQL Injection Attempt UNION SELECT in URI",
+    "severity": "HIGH",
+    "source_ip": "203.0.113.88",
+    "destination_ip": "10.0.10.11",
+    "destination_port": 443,
+    "protocol": "HTTPS",
+    "metadata": {
+      "category": "Web Application Attack",
+      "sensor": "sensor-edge-dmz-02",
+      "classification": "Web Application Attack"
+    }
+  },
+  {
+    "alert_id": "ALT-1003",
+    "source": "SNORT",
+    "timestamp": "2026-09-12T11:27:33.567226",
+    "signature": "SNORT-COMM Potential TLS Tunneling / Unclassified High Port Beaconing",
+    "severity": "MEDIUM",
+    "source_ip": "192.0.2.140",
+    "destination_ip": "10.0.10.19",
+    "destination_port": 9090,
+    "protocol": "TCP",
+    "metadata": {
+      "category": "Network Anomaly",
+      "sensor": "sensor-internal-01",
+      "classification": "Misc Activity"
+    }
+  },
+  {
+    "alert_id": "ALT-1004",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T11:49:33.567226",
+    "signature": "GPL SCAN Low Priority Suspicious Port Probe / Keepalive Scan",
+    "severity": "LOW",
+    "source_ip": "185.220.101.5",
+    "destination_ip": "10.0.10.10",
+    "destination_port": 6379,
+    "protocol": "TCP",
+    "metadata": {
+      "category": "Network Reconnaissance",
+      "sensor": "sensor-edge-dmz-01",
+      "classification": "Generic Protocol Command Decode"
+    }
+  },
+  {
+    "alert_id": "ALT-1005",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T11:12:33.567226",
+    "signature": "ET WEB_SPECIFIC Potential Deserialization Header Injection / Async Exec",
+    "severity": "MEDIUM",
+    "source_ip": "198.51.100.44",
+    "destination_ip": "10.0.10.13",
+    "destination_port": 8000,
+    "protocol": "HTTP",
+    "metadata": {
+      "category": "Exploit Attempt",
+      "sensor": "sensor-edge-dmz-03",
+      "classification": "Attempted Unauthorized Access"
+    }
+  },
+  {
+    "alert_id": "ALT-1006",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T11:02:33.567226",
+    "signature": "ET POLICY Suspicious User-Agent (sqlmap/1.7.2#stable)",
+    "severity": "MEDIUM",
+    "source_ip": "45.154.255.10",
+    "destination_ip": "10.0.10.9",
+    "destination_port": 80,
+    "protocol": "HTTP",
+    "metadata": {
+      "category": "Scanner"
+    }
+  },
+  {
+    "alert_id": "ALT-1007",
+    "source": "SNORT",
+    "timestamp": "2026-09-12T10:55:33.567226",
+    "signature": "INDICATOR-SHELLCODE x86 NOOP sled detected",
+    "severity": "CRITICAL",
+    "source_ip": "194.26.29.112",
+    "destination_ip": "10.0.10.14",
+    "destination_port": 8080,
+    "protocol": "TCP",
+    "metadata": {
+      "category": "Exploit"
+    }
+  },
+  {
+    "alert_id": "ALT-1008",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T10:47:33.567226",
+    "signature": "ET DOS HTTP/2 Rapid Reset Flood Candidate",
+    "severity": "HIGH",
+    "source_ip": "91.240.118.15",
+    "destination_ip": "10.0.10.9",
+    "destination_port": 443,
+    "protocol": "HTTPS",
+    "metadata": {
+      "category": "DoS"
+    }
+  },
+  {
+    "alert_id": "ALT-1009",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T10:32:33.567226",
+    "signature": "ET SCAN Nmap Scripting Engine Probe",
+    "severity": "LOW",
+    "source_ip": "77.247.110.18",
+    "destination_ip": "10.0.10.12",
+    "destination_port": 443,
+    "protocol": "HTTPS",
+    "metadata": {
+      "category": "Recon"
+    }
+  },
+  {
+    "alert_id": "ALT-1010",
+    "source": "SNORT",
+    "timestamp": "2026-09-12T10:25:33.567226",
+    "signature": "OS-OTHER Postfix VRFY Command Enumeration Attempt",
+    "severity": "LOW",
+    "source_ip": "193.106.191.22",
+    "destination_ip": "10.0.10.16",
+    "destination_port": 25,
+    "protocol": "SMTP",
+    "metadata": {
+      "category": "Recon"
+    }
+  },
+  {
+    "alert_id": "ALT-1011",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T09:57:33.567226",
+    "signature": "ET MALWARE CobaltStrike Malleable C2 Beacon Profile Matched",
+    "severity": "CRITICAL",
+    "source_ip": "185.191.171.4",
+    "destination_ip": "10.0.10.15",
+    "destination_port": 443,
+    "protocol": "HTTPS",
+    "metadata": {
+      "category": "C2"
+    }
+  },
+  {
+    "alert_id": "ALT-1012",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T08:57:33.567226",
+    "signature": "ET ATTACK_RESPONSE /bin/sh interactive execution output observed",
+    "severity": "CRITICAL",
+    "source_ip": "10.0.10.15",
+    "destination_ip": "198.51.100.23",
+    "destination_port": 4444,
+    "protocol": "TCP",
+    "metadata": {
+      "category": "Exfiltration"
+    }
+  },
+  {
+    "alert_id": "ALT-1013",
+    "source": "SNORT",
+    "timestamp": "2026-09-12T07:57:33.567226",
+    "signature": "SERVER-WEBAPP Directory Traversal /etc/passwd in query string",
+    "severity": "HIGH",
+    "source_ip": "103.203.57.18",
+    "destination_ip": "10.0.10.9",
+    "destination_port": 80,
+    "protocol": "HTTP",
+    "metadata": {
+      "category": "Web Application Attack"
+    }
+  },
+  {
+    "alert_id": "ALT-1014",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T06:57:33.567226",
+    "signature": "ET EXPLOIT ActiveMQ Deserialization CVE-2023-46604 RCE attempt",
+    "severity": "CRITICAL",
+    "source_ip": "109.237.103.42",
+    "destination_ip": "10.0.10.13",
+    "destination_port": 61616,
+    "protocol": "TCP",
+    "metadata": {
+      "category": "Exploit"
+    }
+  },
+  {
+    "alert_id": "ALT-1015",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T05:57:33.567226",
+    "signature": "GPL CHAT IRC PRIVMSG outbound connection",
+    "severity": "LOW",
+    "source_ip": "10.0.30.13",
+    "destination_ip": "185.143.223.12",
+    "destination_port": 6667,
+    "protocol": "IRC",
+    "metadata": {
+      "category": "Policy"
+    }
+  },
+  {
+    "alert_id": "ALT-1016",
+    "source": "SNORT",
+    "timestamp": "2026-09-12T04:57:33.567226",
+    "signature": "MALWARE-CNC Win.Trojan.Generic DNS Query for FastFlux domain",
+    "severity": "HIGH",
+    "source_ip": "10.0.20.12",
+    "destination_ip": "8.8.8.8",
+    "destination_port": 53,
+    "protocol": "DNS",
+    "metadata": {
+      "category": "C2"
+    }
+  },
+  {
+    "alert_id": "ALT-1017",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T03:57:33.567226",
+    "signature": "ET POLICY TeamViewer remote support traffic detected",
+    "severity": "LOW",
+    "source_ip": "10.0.30.15",
+    "destination_ip": "185.180.222.1",
+    "destination_port": 5938,
+    "protocol": "TCP",
+    "metadata": {
+      "category": "Policy"
+    }
+  },
+  {
+    "alert_id": "ALT-1018",
+    "source": "SURICATA",
+    "timestamp": "2026-09-12T02:57:33.567226",
+    "signature": "ET WEB_SERVER Spring Framework SpEL Expression In URI",
+    "severity": "MEDIUM",
+    "source_ip": "45.133.1.88",
+    "destination_ip": "10.0.10.11",
+    "destination_port": 443,
+    "protocol": "HTTPS",
+    "metadata": {
+      "category": "Web Attack"
+    }
+  },
+  {
+    "alert_id": "ALT-1019",
+    "source": "SNORT",
+    "timestamp": "2026-09-12T01:57:33.567226",
+    "signature": "PROTOCOL-ICMP Large ICMP Ping Tunneling Candidate (>1400 bytes)",
+    "severity": "LOW",
+    "source_ip": "194.87.68.10",
+    "destination_ip": "10.0.10.19",
+    "destination_port": 0,
+    "protocol": "ICMP",
+    "metadata": {
+      "category": "Tunneling"
+    }
+  },
+  {
+    "alert_id": "ALT-1020",
+    "source": "SURICATA",
+    "timestamp": "2026-09-11T23:57:33.567226",
+    "signature": "ET EXPLOIT Confluence OGNL Remote Code Execution (CVE-2023-22527)",
+    "severity": "CRITICAL",
+    "source_ip": "185.220.100.252",
+    "destination_ip": "10.0.30.15",
+    "destination_port": 8090,
+    "protocol": "HTTP",
+    "metadata": {
+      "category": "Exploit"
+    }
+  }
+]
