@@ -21,50 +21,50 @@ export const AgentTimeline: React.FC<AgentTimelineProps> = ({ events }) => {
   const getEventBadge = (type: string) => {
     switch (type) {
       case 'OBSERVE':
-        return { label: 'Observation', icon: Eye, color: 'text-blue-400 bg-blue-950/60 border-blue-800' };
+        return { label: 'Observation', icon: Eye, color: 'text-blue-300 bg-blue-950/70 border-blue-700/60' };
       case 'PLAN':
-        return { label: 'Gap Analysis', icon: Cpu, color: 'text-cyan-400 bg-cyan-950/60 border-cyan-800' };
+        return { label: 'Gap Analysis', icon: Cpu, color: 'text-cyan-300 bg-cyan-950/70 border-cyan-700/60' };
       case 'TOOL_CALL':
-        return { label: 'Tool Invocation', icon: FileSearch, color: 'text-purple-300 bg-purple-950/60 border-purple-800' };
+        return { label: 'Tool Invocation', icon: FileSearch, color: 'text-purple-300 bg-purple-950/70 border-purple-700/60' };
       case 'TOOL_RESULT':
-        return { label: 'Tool Result', icon: Terminal, color: 'text-slate-300 bg-slate-800 border-slate-700' };
+        return { label: 'Tool Result', icon: Terminal, color: 'text-slate-300 bg-slate-850 border-slate-700' };
       case 'EVIDENCE':
-        return { label: 'Evidence Verified', icon: ShieldAlert, color: 'text-amber-300 bg-amber-950/60 border-amber-800' };
+        return { label: 'Evidence Verified', icon: ShieldAlert, color: 'text-amber-300 bg-amber-950/70 border-amber-700/60' };
       case 'HYPOTHESIS_UPDATE':
-        return { label: 'Hypothesis Refined', icon: Sparkles, color: 'text-indigo-300 bg-indigo-950/60 border-indigo-800' };
+        return { label: 'Hypothesis Refined', icon: Sparkles, color: 'text-indigo-300 bg-indigo-950/70 border-indigo-700/60' };
       case 'DECISION':
-        return { label: 'Outcome Decision', icon: CheckCircle2, color: 'text-rose-300 bg-rose-950/60 border-rose-800' };
+        return { label: 'Outcome Decision', icon: CheckCircle2, color: 'text-rose-300 bg-rose-950/70 border-rose-700/60' };
       case 'ACTION':
-        return { label: 'Containment Action', icon: Lock, color: 'text-red-400 bg-red-950 border-red-800 font-bold' };
+        return { label: 'Containment Action', icon: Lock, color: 'text-red-300 bg-red-950/90 border-red-600 font-bold' };
       case 'VERIFY':
-        return { label: 'State Verification', icon: CheckCircle2, color: 'text-emerald-400 bg-emerald-950 border-emerald-800 font-bold' };
+        return { label: 'State Verification', icon: CheckCircle2, color: 'text-emerald-300 bg-emerald-950/90 border-emerald-600 font-bold' };
       case 'ADAPT':
-        return { label: 'Dynamic Adaptation', icon: Sparkles, color: 'text-purple-200 bg-purple-900 border-purple-600 font-bold animate-pulse' };
+        return { label: 'Dynamic Adaptation', icon: Sparkles, color: 'text-purple-200 bg-purple-900/90 border-purple-500 font-bold animate-pulse' };
       case 'OVERRIDE':
-        return { label: 'Human Override', icon: ShieldAlert, color: 'text-amber-200 bg-amber-900 border-amber-600 font-bold' };
+        return { label: 'Human Override', icon: ShieldAlert, color: 'text-amber-200 bg-amber-900/90 border-amber-500 font-bold' };
       default:
-        return { label: type, icon: Terminal, color: 'text-slate-400 bg-slate-900 border-slate-800' };
+        return { label: type, icon: Terminal, color: 'text-slate-300 bg-slate-900 border-slate-800' };
     }
   };
 
   return (
-    <div className="glass-panel rounded-xl p-4 border border-cyan-500/20 shadow-lg flex flex-col h-[540px]">
-      <div className="flex items-center justify-between pb-2.5 border-b border-slate-800 mb-3">
-        <div className="flex items-center space-x-2">
-          <Terminal className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
+    <div className="glass-panel rounded-xl p-5 sm:p-6 border border-cyan-500/20 shadow-lg flex flex-col h-[580px]">
+      <div className="flex items-center justify-between pb-3.5 border-b border-slate-800 mb-4">
+        <div className="flex items-center space-x-2.5">
+          <Terminal className="w-5 h-5 text-cyan-400" />
+          <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-slate-100 font-mono">
             Agent Execution Timeline
           </h3>
         </div>
-        <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+        <span className="text-xs font-mono text-slate-300 bg-slate-900/90 px-3 py-1 rounded-md border border-slate-800 font-semibold">
           {events.length} Steps Recorded
         </span>
       </div>
 
-      {/* Events Stream */}
-      <div className="flex-1 overflow-y-auto space-y-2 pr-1 font-mono text-xs">
+      {/* Events Stream with ~16px spacing (space-y-4) */}
+      <div className="flex-1 overflow-y-auto space-y-4 pr-2 font-mono">
         {events.length === 0 ? (
-          <div className="h-full flex items-center justify-center text-slate-500 text-xs italic">
+          <div className="h-full flex items-center justify-center text-slate-400 text-sm italic font-mono">
             Investigation pipeline standby. Launch a scenario to stream live reasoning steps.
           </div>
         ) : (
@@ -79,47 +79,47 @@ export const AgentTimeline: React.FC<AgentTimelineProps> = ({ events }) => {
             return (
               <div
                 key={eventKey}
-                className="p-2.5 rounded-lg bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition-all flex flex-col gap-1"
+                className="p-4 rounded-xl bg-slate-900/75 border border-slate-800 hover:border-slate-700 transition-all flex flex-col gap-2 shadow-sm"
               >
-                {/* Event Top Bar */}
-                <div className="flex items-center justify-between text-[10px]">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-slate-500">{timeStr}</span>
-                    <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] border ${badge.color}`}>
-                      <Icon className="w-3 h-3" />
+                {/* Event Top Bar: Timestamps & Badges (11-12px) */}
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-slate-400 font-semibold">{timeStr}</span>
+                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold border ${badge.color}`}>
+                      <Icon className="w-3.5 h-3.5" />
                       <span>{badge.label}</span>
                     </span>
                     {evt.tool && (
-                      <span className="text-cyan-400 font-semibold text-[10px]">
+                      <span className="text-cyan-300 font-semibold text-xs bg-cyan-950/60 border border-cyan-800/40 px-2 py-0.5 rounded">
                         tool: {evt.tool}()
                       </span>
                     )}
                   </div>
                   {evt.confidence !== undefined && evt.confidence !== null && (
-                    <span className="text-purple-300 font-semibold text-[10px]">
-                      conf: {evt.confidence}%
+                    <span className="text-purple-300 font-bold text-xs bg-purple-950/60 border border-purple-800/40 px-2 py-0.5 rounded">
+                      Confidence: {evt.confidence}%
                     </span>
                   )}
                 </div>
 
-                {/* Human Readable Action Summary */}
-                <div className="text-slate-200 text-xs pl-0.5 leading-relaxed font-sans mt-0.5">
+                {/* Human Readable Action Summary: 13-14px */}
+                <div className="text-slate-100 text-xs sm:text-[13px] sm:text-sm pl-0.5 leading-relaxed font-sans">
                   {evt.description}
                 </div>
 
                 {/* Collapsible Raw Telemetry Toggle */}
                 {hasRaw && (
-                  <div className="mt-1 pt-1 border-t border-slate-800/60">
+                  <div className="mt-1 pt-2 border-t border-slate-800/60">
                     <button
                       onClick={() => toggleRaw(eventKey)}
-                      className="text-[10px] text-slate-400 hover:text-cyan-300 flex items-center gap-1 transition-colors"
+                      className="text-xs text-slate-400 hover:text-cyan-300 flex items-center gap-1.5 transition-colors cursor-pointer font-mono"
                     >
-                      {isRawOpen ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-                      <span>{isRawOpen ? 'Hide raw telemetry' : 'View raw telemetry'}</span>
+                      {isRawOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5 text-cyan-400" />}
+                      <span>{isRawOpen ? 'Hide raw event' : '▸ View raw event'}</span>
                     </button>
                     {isRawOpen && (
-                      <div className="mt-1 bg-slate-950/90 rounded p-2 text-[10px] text-slate-400 overflow-x-auto max-h-32 border border-slate-800">
-                        <pre>{JSON.stringify(evt.output || evt.input, null, 2)}</pre>
+                      <div className="mt-2 bg-slate-950/90 rounded-lg p-3 text-xs text-slate-300 overflow-x-auto max-h-40 border border-slate-800">
+                        <pre className="font-mono leading-normal">{JSON.stringify(evt.output || evt.input, null, 2)}</pre>
                       </div>
                     )}
                   </div>

@@ -59,50 +59,51 @@ export const EvidenceGraph: React.FC<EvidenceGraphProps> = ({ incident, alert })
       color: (hasLogs || hasInjected) ? 'border-purple-500 bg-purple-950/40 text-purple-300' : 'border-slate-800 bg-slate-900/40 text-slate-500'
     },
     {
-      id: 'decision',
+      id: 'outcome',
       title: 'Attack Outcome',
-      subtitle: isDecided ? incident?.attack_outcome?.replace('ATTACK_', '') : 'Assessing...',
-      icon: CheckCircle2,
+      subtitle: isDecided
+        ? (incident?.attack_outcome === 'ATTACK_SUCCEEDED' ? 'BREACH CONFIRMED' :
+           incident?.attack_outcome === 'ATTACK_FAILED' ? 'ATTACK DEFENDED' : 'INSUFFICIENT')
+        : 'Evaluating...',
+      icon: incident?.attack_outcome === 'ATTACK_SUCCEEDED' ? AlertCircle : CheckCircle2,
       active: isDecided,
-      color: incident?.attack_outcome === 'ATTACK_SUCCEEDED' ? 'border-red-500 bg-red-950/60 text-red-300 shadow-glow-red' :
-             incident?.attack_outcome === 'ATTACK_FAILED' ? 'border-emerald-500 bg-emerald-950/60 text-emerald-300 shadow-glow-emerald' :
-             'border-slate-800 bg-slate-900/40 text-slate-500'
+      color: incident?.attack_outcome === 'ATTACK_SUCCEEDED'
+        ? 'border-red-500 bg-red-950/60 text-red-300 shadow-glow-red'
+        : incident?.attack_outcome === 'ATTACK_FAILED'
+        ? 'border-emerald-500 bg-emerald-950/60 text-emerald-300 shadow-glow-emerald'
+        : 'border-slate-800 bg-slate-900/40 text-slate-500'
     },
     {
-      id: 'response',
+      id: 'firewall',
       title: 'Simulated Firewall',
-      subtitle: isBlocked
-        ? 'RULE ACTIVE (PASSED)'
-        : isFailed
-        ? 'NO CONTAINMENT REQUIRED'
-        : 'Standby',
-      icon: isFailed ? ShieldX : Lock,
+      subtitle: isBlocked ? 'IP BLOCKED (Simulated)' : isFailed ? 'NO CONTAINMENT REQUIRED' : 'Standby / Evaluating',
+      icon: isBlocked ? Lock : isFailed ? ShieldCheck : ShieldX,
       active: isBlocked || isFailed,
       color: isBlocked
         ? 'border-emerald-400 bg-emerald-950 text-emerald-300 shadow-glow-emerald'
         : isFailed
-        ? 'border-slate-700 bg-slate-900/80 text-slate-400'
+        ? 'border-slate-700 bg-slate-900/80 text-slate-300'
         : 'border-slate-800 bg-slate-900/40 text-slate-500'
     }
   ];
 
   return (
-    <div className="glass-panel rounded-xl p-4 border border-cyan-500/20 shadow-lg">
-      <div className="flex items-center justify-between pb-2.5 border-b border-slate-800 mb-3 font-mono">
-        <div className="flex items-center space-x-2">
-          <Network className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+    <div className="glass-panel rounded-xl p-5 sm:p-6 border border-cyan-500/20 shadow-lg">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-4 font-mono">
+        <div className="flex items-center space-x-2.5">
+          <Network className="w-5 h-5 text-cyan-400" />
+          <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-slate-100">
             Multi-Source Evidence Correlation
           </h3>
         </div>
-        <span className="text-[10px] text-slate-400">
-          Correlated Artifacts: <strong className="text-cyan-400">{evidenceList.length}</strong>
+        <span className="text-xs sm:text-sm text-slate-300">
+          Correlated Artifacts: <strong className="text-cyan-400 font-bold text-sm sm:text-base">{evidenceList.length}</strong>
         </span>
       </div>
 
       {/* Horizontal Flow Container with Scroll Safety */}
-      <div className="overflow-x-auto pb-1">
-        <div className="flex items-center justify-between gap-2 min-w-[1000px] py-1">
+      <div className="overflow-x-auto pb-2">
+        <div className="flex items-center justify-between gap-3 min-w-[1100px] py-1">
           {nodes.map((node, index) => {
             const Icon = node.icon;
             const isPathActive = node.active && (index === 0 || nodes[index - 1].active);
@@ -110,20 +111,22 @@ export const EvidenceGraph: React.FC<EvidenceGraphProps> = ({ incident, alert })
             return (
               <React.Fragment key={node.id}>
                 <div
-                  className={`flex-1 min-w-[140px] max-w-[170px] p-2.5 rounded-lg border text-center transition-all ${node.color} ${
+                  className={`flex-1 min-w-[150px] max-w-[170px] p-3.5 sm:p-4 rounded-xl border text-center transition-all ${node.color} ${
                     node.active ? 'shadow-sm' : 'opacity-50'
                   }`}
                 >
-                  <div className="flex justify-center mb-1">
-                    <Icon className={`w-4 h-4 ${node.active ? 'animate-pulse' : ''}`} />
+                  <div className="flex justify-center mb-1.5">
+                    <Icon className={`w-5 h-5 ${node.active ? 'animate-pulse' : ''}`} />
                   </div>
-                  <div className="text-[11px] font-bold font-mono truncate">{node.title}</div>
-                  <div className="text-[10px] text-slate-400 truncate mt-0.5">{node.subtitle}</div>
+                  {/* Node Title: 13-14px */}
+                  <div className="text-[13px] sm:text-sm font-bold font-mono truncate">{node.title}</div>
+                  {/* Node Subtitle: 11-12px */}
+                  <div className="text-[11px] sm:text-xs text-slate-300 truncate mt-1">{node.subtitle}</div>
                 </div>
 
                 {index < nodes.length - 1 && (
                   <div className="flex items-center text-slate-600 px-0.5">
-                    <ArrowRight className={`w-3.5 h-3.5 transition-all ${
+                    <ArrowRight className={`w-4 h-4 transition-all ${
                       isPathActive && nodes[index + 1].active
                         ? 'text-cyan-400 animate-flow-pulse'
                         : 'text-slate-700'

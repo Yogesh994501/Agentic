@@ -259,7 +259,7 @@ export const App: React.FC = () => {
         onNavigate={scrollToSection}
       />
 
-      <main className="flex-1 p-4 lg:p-6 space-y-5 max-w-[1680px] w-full mx-auto">
+      <main className="flex-1 p-4 lg:p-6 space-y-6 sm:space-y-7 max-w-[1680px] w-full mx-auto">
         {/* 1. Command Center / KPI Row */}
         <section id="command-center" className="scroll-mt-20">
           <KpiCards
@@ -285,7 +285,7 @@ export const App: React.FC = () => {
         </section>
 
         {/* 3. Live Autonomous Investigation Pipeline & Hypothesis */}
-        <section id="investigation" className="scroll-mt-20 space-y-4">
+        <section id="investigation" className="scroll-mt-20 space-y-5 sm:space-y-6">
           <LiveAgentState
             incident={currentIncident}
             events={events}
