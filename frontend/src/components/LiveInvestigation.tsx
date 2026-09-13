@@ -161,8 +161,44 @@ export const LiveInvestigation: React.FC<LiveInvestigationProps> = ({
           </div>
         );
 
+      case 'UNDETERMINED':
       default:
-        return null;
+        return (
+          <div className="p-4 sm:p-5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-300 font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 rounded-lg bg-slate-800/80 border border-slate-700 text-cyan-400">
+                  <Shield className="w-7 h-7 text-cyan-400" />
+                </div>
+                <div>
+                  <div className="text-lg sm:text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
+                    <span>AWAITING AUTONOMOUS INVESTIGATION</span>
+                    <span className="text-xs px-2.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                      STANDBY
+                    </span>
+                  </div>
+                  <div className="text-xs sm:text-sm text-slate-400 font-sans mt-1">
+                    Alert ingested into SOC queue. Launch investigation to correlate vulnerabilities, PCAP, and server logs.
+                  </div>
+                </div>
+              </div>
+
+              {/* Badges / Metrics */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs sm:text-sm font-bold text-slate-300">
+                  {confidence}% BASELINE PRIOR
+                </span>
+                <span className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs sm:text-sm font-bold text-slate-400">
+                  {incident.evidence.length} ARTIFACTS
+                </span>
+                <span className="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-xs sm:text-sm font-bold text-slate-300 flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  NO ACTIVE BLOCK (STANDBY)
+                </span>
+              </div>
+            </div>
+          </div>
+        );
     }
   };
 

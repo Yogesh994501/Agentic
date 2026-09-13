@@ -16,7 +16,8 @@ export const LiveAgentState: React.FC<LiveAgentStateProps> = ({
   if (!incident) return null;
 
   const latestEvent = events.length > 0 ? events[events.length - 1] : null;
-  const isComplete = !isInvestigating && incident.attack_outcome !== 'UNDETERMINED';
+  const isComplete = !isInvestigating && incident.attack_outcome !== 'UNDETERMINED' && events.length > 0;
+  const isStandby = !isInvestigating && (incident.attack_outcome === 'UNDETERMINED' || events.length === 0);
   const outcome = incident.attack_outcome;
 
   // Pipeline phases
@@ -32,6 +33,7 @@ export const LiveAgentState: React.FC<LiveAgentStateProps> = ({
 
   // Determine current active phase based on recent events
   const getActivePhaseIndex = () => {
+    if (isStandby) return -1;
     if (isComplete) return phases.length;
     if (!latestEvent) return 0;
     const type = latestEvent.event_type;
@@ -66,10 +68,15 @@ export const LiveAgentState: React.FC<LiveAgentStateProps> = ({
               </span>
               <span>Autonomous Agent In Progress — {incident.incident_id}</span>
             </div>
-          ) : (
+          ) : isComplete ? (
             <div className="flex items-center space-x-2.5 text-emerald-400 font-mono text-sm sm:text-base font-bold uppercase tracking-wider">
               <CheckCircle2 className="w-5 h-5" />
               <span>Investigation Cycle Complete — {incident.incident_id}</span>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2.5 text-cyan-400 font-mono text-sm sm:text-base font-bold uppercase tracking-wider">
+              <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
+              <span>Standby — Awaiting Autonomous Investigation — {incident.incident_id}</span>
             </div>
           )}
         </div>
@@ -81,7 +88,7 @@ export const LiveAgentState: React.FC<LiveAgentStateProps> = ({
           </span>
           <span className="text-slate-600 font-bold">|</span>
           <span className="text-slate-300">
-            Confidence: <strong className="text-purple-400 font-bold">{incident.confidence}%</strong>
+            Confidence: <strong className="text-purple-400 font-bold">{incident.confidence}%{isStandby ? ' (Baseline)' : ''}</strong>
           </span>
         </div>
       </div>
@@ -99,11 +106,11 @@ export const LiveAgentState: React.FC<LiveAgentStateProps> = ({
                   ? 'bg-cyan-500/20 border border-cyan-400 text-cyan-200 shadow-glow-cyan font-bold'
                   : isPassed
                   ? 'text-emerald-300 bg-emerald-950/40 border border-emerald-800/40 font-medium'
-                  : 'text-slate-500 bg-slate-900/40'
+                  : 'text-slate-400 bg-slate-900/40 border border-slate-800/40'
               }`}>
                 <span className={`w-2 h-2 rounded-full ${
                   isCurrent ? 'bg-cyan-400 animate-ping' :
-                  isPassed ? 'bg-emerald-400' : 'bg-slate-700'
+                  isPassed ? 'bg-emerald-400' : 'bg-slate-600'
                 }`} />
                 <span>{phase.label}</span>
               </div>
@@ -119,19 +126,21 @@ export const LiveAgentState: React.FC<LiveAgentStateProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pt-2 font-mono">
         {/* Current Agent Action: 13-14px body text */}
         <div className="md:col-span-6 bg-slate-950/70 p-3.5 sm:p-4 rounded-xl border border-slate-800 flex items-start space-x-3">
-          <Activity className={`w-4 h-4 mt-1 shrink-0 ${isInvestigating ? 'text-cyan-400 animate-spin' : 'text-slate-400'}`} />
+          <Activity className={`w-4 h-4 mt-1 shrink-0 ${isInvestigating ? 'text-cyan-400 animate-spin' : isComplete ? 'text-emerald-400' : 'text-cyan-400'}`} />
           <div className="flex-1">
             <span className="text-xs text-slate-400 uppercase font-semibold block">
-              {isInvestigating ? 'Current Autonomous Action' : 'Final Outcome Reached'}
+              {isInvestigating ? 'Current Autonomous Action' : isComplete ? 'Final Outcome Reached' : 'Agent Status'}
             </span>
             <p className="text-sm text-slate-100 mt-1.5 leading-relaxed">
               {isInvestigating
                 ? (latestEvent?.description || 'Agent evaluating evidence gaps and picking next sandbox tool...')
-                : `${incident.attack_outcome.replace('ATTACK_', '')} (${incident.confidence}% confidence) — ${
+                : isComplete
+                ? `${incident.attack_outcome.replace('ATTACK_', '')} (${incident.confidence}% confidence) — ${
                     outcome === 'ATTACK_SUCCEEDED' ? 'Simulated firewall containment verified active.' :
                     outcome === 'ATTACK_FAILED' ? 'Perimeter defended host; no containment required.' :
                     'Telemetry inconclusive; refusing binary forced action.'
-                  }`}
+                  }`
+                : 'Agent on standby. Security alert ingested into queue. Select a scenario above or click "Run Autonomous Investigation" to begin multi-source evidence correlation.'}
             </p>
           </div>
         </div>

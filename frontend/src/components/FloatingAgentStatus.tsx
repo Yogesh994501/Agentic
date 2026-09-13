@@ -15,7 +15,7 @@ export const FloatingAgentStatus: React.FC<FloatingAgentStatusProps> = ({
 }) => {
   const isInvestigating = agentStatus === 'INVESTIGATING';
   const isResponding = agentStatus === 'RESPONDING';
-  const hasCompleted = agentStatus === 'IDLE' && currentIncident !== null;
+  const hasCompleted = agentStatus === 'IDLE' && currentIncident !== null && currentIncident.attack_outcome !== 'UNDETERMINED';
 
   return (
     <button
@@ -27,7 +27,7 @@ export const FloatingAgentStatus: React.FC<FloatingAgentStatusProps> = ({
           ? 'bg-red-950/80 border-red-400/80 text-red-200 shadow-glow-red'
           : hasCompleted
           ? 'bg-[#07131b]/90 border-cyan-500/40 text-cyan-200 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:border-cyan-400'
-          : 'bg-slate-900/80 border-slate-700/60 text-slate-400 hover:border-slate-600'
+          : 'bg-slate-900/80 border-slate-700/60 text-slate-300 hover:border-slate-600'
       }`}
       title="Click to jump to active investigation"
       aria-label="Floating agent status indicator"
@@ -43,7 +43,7 @@ export const FloatingAgentStatus: React.FC<FloatingAgentStatusProps> = ({
       ) : hasCompleted ? (
         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
       ) : (
-        <span className="w-2 h-2 rounded-full bg-slate-500" />
+        <span className="w-2 h-2 rounded-full bg-cyan-400" />
       )}
 
       {/* Label */}
@@ -54,7 +54,7 @@ export const FloatingAgentStatus: React.FC<FloatingAgentStatusProps> = ({
           ? '● AGENT CONTAINING'
           : hasCompleted
           ? '✓ INVESTIGATION COMPLETE'
-          : '● AGENT IDLE'}
+          : '● AGENT STANDBY'}
       </span>
 
       {/* Confidence Pill when Available */}

@@ -21,7 +21,10 @@ export const ResponseCenter: React.FC<ResponseCenterProps> = ({
 }) => {
   const isExecuted = incident?.response_status === 'EXECUTED';
   const isRejected = incident?.response_status === 'REJECTED';
+  const isSucceeded = incident?.attack_outcome === 'ATTACK_SUCCEEDED';
   const isFailed = incident?.attack_outcome === 'ATTACK_FAILED';
+  const isInconclusive = incident?.attack_outcome === 'INSUFFICIENT_EVIDENCE';
+  const isUndetermined = !incident || incident.attack_outcome === 'UNDETERMINED';
   const targetIp = alert?.source_ip || '198.51.100.23';
 
   return (
@@ -47,10 +50,20 @@ export const ResponseCenter: React.FC<ResponseCenterProps> = ({
                 Automated Response Decision
               </span>
               <div className="text-sm sm:text-base font-bold text-slate-100 flex flex-wrap items-center gap-2 mt-1">
-                {isFailed ? (
+                {isUndetermined ? (
+                  <div className="flex items-center gap-1.5 text-slate-300">
+                    <ShieldCheck className="w-5 h-5 text-cyan-400" />
+                    <span>STANDBY — NO ACTION REQUIRED</span>
+                  </div>
+                ) : isFailed ? (
                   <div className="flex items-center gap-1.5 text-slate-200">
                     <ShieldX className="w-5 h-5 text-emerald-400" />
                     <span>NO CONTAINMENT REQUIRED</span>
+                  </div>
+                ) : isInconclusive ? (
+                  <div className="flex items-center gap-1.5 text-amber-300">
+                    <ShieldCheck className="w-5 h-5 text-amber-400" />
+                    <span>CONTAINMENT DEFERRED</span>
                   </div>
                 ) : (
                   <span className="text-red-400 font-bold">BLOCK IP: {targetIp}</span>
@@ -64,13 +77,21 @@ export const ResponseCenter: React.FC<ResponseCenterProps> = ({
                   <span className="text-xs px-2.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500 font-bold">
                     OPERATOR REJECTED
                   </span>
+                ) : isUndetermined ? (
+                  <span className="text-xs px-2.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 font-semibold">
+                    AWAITING EVALUATION
+                  </span>
                 ) : isFailed ? (
                   <span className="text-xs px-2.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-700 font-bold">
                     HOST DEFENDED
                   </span>
+                ) : isInconclusive ? (
+                  <span className="text-xs px-2.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800 font-bold">
+                    EVIDENCE INCONCLUSIVE
+                  </span>
                 ) : (
-                  <span className="text-xs px-2.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                    EVALUATING
+                  <span className="text-xs px-2.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-800 font-bold">
+                    CONTAINMENT JUSTIFIED
                   </span>
                 )}
               </div>
@@ -87,15 +108,19 @@ export const ResponseCenter: React.FC<ResponseCenterProps> = ({
 
           <p className="text-slate-200 text-[13px] sm:text-sm mt-2 bg-slate-950/80 p-3 rounded-lg border border-slate-800 leading-relaxed">
             <strong className="text-slate-100">Policy Trigger:</strong> {
-              isFailed
+              isUndetermined
+                ? `Awaiting investigation (Confidence: ${incident.confidence}%). Automated threshold (≥80% + Attack Succeeded) not met; firewall rules standby.`
+                : isFailed
                 ? 'Attack verified dropped by perimeter filter; host uncompromised. Containment suppressed.'
-                : `Attack outcome = ${incident.attack_outcome.replace('ATTACK_', '')} (${incident.confidence}%). Automated threshold met.`
+                : isInconclusive
+                ? 'Correlated telemetry inconclusive (50%). Refusing disruptive block without verified compromise.'
+                : `Attack outcome = SUCCEEDED (${incident.confidence}%). Automated containment threshold (≥80%) exceeded based on multi-source evidence.`
             }
           </p>
 
           {/* Action buttons */}
           <div className="flex flex-wrap items-center gap-2.5 mt-3 pt-2.5 border-t border-slate-800">
-            {!isExecuted && incident.attack_outcome === 'ATTACK_SUCCEEDED' && (
+            {!isExecuted && isSucceeded && (
               <button
                 onClick={onExecuteBlock}
                 className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm shadow-glow-red transition-all cursor-pointer"
@@ -113,7 +138,7 @@ export const ResponseCenter: React.FC<ResponseCenterProps> = ({
               </button>
             )}
 
-            {!isRejected && !isFailed && (
+            {!isRejected && isSucceeded && !isExecuted && (
               <button
                 onClick={onRejectResponse}
                 className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs sm:text-sm font-semibold transition-all cursor-pointer"
