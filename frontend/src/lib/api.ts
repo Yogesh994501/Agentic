@@ -234,9 +234,12 @@ export const api = {
 
   // SSE Stream helper
   createEventSource(onEvent: (event: AgentEvent) => void): { close: () => void } {
+    let es: EventSource | null = null;
+    const unsubMock = mockEngine.onEvent(onEvent);
+
     if (!isStaticHost) {
       try {
-        const es = new EventSource(`${API_BASE}/events/stream`);
+        es = new EventSource(`${API_BASE}/events/stream`);
         es.addEventListener('agent_event', (e: MessageEvent) => {
           try {
             const parsed = JSON.parse(e.data);
@@ -245,12 +248,19 @@ export const api = {
             console.error('Failed to parse SSE payload:', err);
           }
         });
-        return es;
-      } catch {
-        // Fall back to mockEngine event listener
+        es.onerror = () => {
+          // Backend stream dropped or reconnecting; fallback handles mock events
+        };
+      } catch (err) {
+        console.warn('Failed to initialize EventSource, fallback active:', err);
       }
     }
-    const unsubscribe = mockEngine.onEvent(onEvent);
-    return { close: unsubscribe };
+
+    return {
+      close: () => {
+        if (es) es.close();
+        unsubMock();
+      }
+    };
   }
 };
