@@ -90,7 +90,9 @@ export const Header: React.FC<HeaderProps> = ({
         aria-label="Main Operations Navigation"
       >
         {NAV_SECTIONS.map((sec) => {
-          const isActive = activeSection === sec.id;
+          const isActive =
+            activeSection === sec.id ||
+            (sec.id === 'agent-trace' && activeSection === 'decision-trace');
           return (
             <button
               key={sec.id}

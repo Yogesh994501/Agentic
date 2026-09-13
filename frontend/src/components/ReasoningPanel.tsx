@@ -7,7 +7,19 @@ interface ReasoningPanelProps {
 }
 
 export const ReasoningPanel: React.FC<ReasoningPanelProps> = ({ incident }) => {
-  if (!incident) return null;
+  if (!incident) {
+    return (
+      <div className="glass-panel rounded-xl p-5 sm:p-6 border border-cyan-500/20 shadow-lg font-mono flex flex-col justify-center items-center text-center min-h-[340px] h-full">
+        <Brain className="w-8 h-8 text-purple-400/60 mb-2" />
+        <h3 className="text-base font-bold uppercase tracking-wider text-slate-200">
+          Agent Decision Trace
+        </h3>
+        <p className="text-xs text-slate-400 mt-1.5 max-w-sm leading-relaxed">
+          Decision trace standby. Launch a simulation scenario to view the autonomous goal, working hypothesis, and auditable reasoning.
+        </p>
+      </div>
+    );
+  }
 
   const evidence = incident.evidence || [];
   const hasOutcome = incident.attack_outcome && incident.attack_outcome !== 'UNDETERMINED';

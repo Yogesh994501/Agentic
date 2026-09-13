@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from './lib/api';
 import type { Incident, Alert, SandboxState, Scenario, AgentEvent } from './lib/types';
 import { Header } from './components/Header';
@@ -110,8 +110,21 @@ export const App: React.FC = () => {
     };
   }, []);
 
+  // Programmatic scroll lock ref to prevent observer from overriding user selection while smooth scrolling
+  const isProgrammaticScrollRef = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<number | null>(null);
+
   // Smooth Scroll Helper
   const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    isProgrammaticScrollRef.current = true;
+    if (scrollTimeoutRef.current) {
+      window.clearTimeout(scrollTimeoutRef.current);
+    }
+    scrollTimeoutRef.current = window.setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+    }, 900);
+
     const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -120,9 +133,18 @@ export const App: React.FC = () => {
 
   // IntersectionObserver for Automatic Active Section Highlighting
   useEffect(() => {
-    const sectionIds = ['command-center', 'simulation', 'investigation', 'evidence', 'agent-trace'];
+    const sectionIds = [
+      'command-center',
+      'simulation',
+      'investigation',
+      'evidence',
+      'agent-trace',
+      'decision-trace',
+    ];
 
     const handleIntersect: IntersectionObserverCallback = (entries) => {
+      if (isProgrammaticScrollRef.current) return;
+
       const visibleEntries = entries.filter((e) => e.isIntersecting);
       if (visibleEntries.length > 0) {
         // Sort by intersection ratio descending
@@ -133,8 +155,8 @@ export const App: React.FC = () => {
 
     const observer = new IntersectionObserver(handleIntersect, {
       root: null,
-      rootMargin: '-80px 0px -40% 0px',
-      threshold: [0.15, 0.35, 0.6],
+      rootMargin: '-60px 0px -20% 0px',
+      threshold: [0.1, 0.25, 0.5],
     });
 
     sectionIds.forEach((id) => {
@@ -142,7 +164,27 @@ export const App: React.FC = () => {
       if (el) observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    // Handle scroll near the very bottom of the document
+    const handleScroll = () => {
+      if (isProgrammaticScrollRef.current) return;
+      const isAtBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 60;
+      if (isAtBottom) {
+        setActiveSection((prev) =>
+          prev === 'decision-trace' ? 'decision-trace' : 'agent-trace'
+        );
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        window.clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Handlers
@@ -312,27 +354,22 @@ export const App: React.FC = () => {
           <EvidenceGraph incident={currentIncident} alert={currentAlert} />
         </section>
 
-        {/* 5. Agent Trace: Live Telemetry Stream & Reasoning Center */}
-        <section id="agent-trace" className="scroll-mt-20 grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Left Column (7 cols): Real-Time Agent Execution Timeline */}
-          <div className="lg:col-span-7">
-            <AgentTimeline events={events} />
-          </div>
+        {/* 5. Agent Activity: Full-Width Real-Time Execution Timeline */}
+        <section id="agent-trace" className="scroll-mt-20 w-full">
+          <AgentTimeline events={events} />
+        </section>
 
-          {/* Right Column (5 cols): Reasoning Decision Trace & Response Center */}
-          <div className="lg:col-span-5 space-y-4">
-            <div id="decision-trace" className="scroll-mt-20">
-              <ReasoningPanel incident={currentIncident} />
-            </div>
-            <ResponseCenter
-              incident={currentIncident}
-              alert={currentAlert}
-              firewallRules={sandboxState?.active_firewall_blocks || []}
-              onExecuteBlock={handleExecuteBlock}
-              onRejectResponse={handleRejectResponse}
-              onReleaseBlock={handleReleaseBlock}
-            />
-          </div>
+        {/* 6. Decision Trace: Reasoning & Sandbox Firewall Response Center Side-by-Side */}
+        <section id="decision-trace" className="scroll-mt-20 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-start">
+          <ReasoningPanel incident={currentIncident} />
+          <ResponseCenter
+            incident={currentIncident}
+            alert={currentAlert}
+            firewallRules={sandboxState?.active_firewall_blocks || []}
+            onExecuteBlock={handleExecuteBlock}
+            onRejectResponse={handleRejectResponse}
+            onReleaseBlock={handleReleaseBlock}
+          />
         </section>
       </main>
 
